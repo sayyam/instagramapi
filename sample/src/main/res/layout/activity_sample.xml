@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".SampleActivity">
+
+    <com.instagram.instagramapi.widgets.InstagramLoginButton
+        android:id="@+id/instagramLoginButton"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:text="Login Button" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/instagramLoginButton"
+        android:layout_marginTop="20dp"
+        android:text="Login"/>
+
+</RelativeLayout>
