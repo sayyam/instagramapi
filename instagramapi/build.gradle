@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'instagramapi'
+
+    publishedGroupId = 'instagram'
+    libraryName = 'InstagramAPI'
+    artifact = 'instagramapi'
+
+    libraryDescription = 'A wrapper on instagram API for android'
+
+    siteUrl = 'https://github.com/sayyam/instagramapi'
+    gitUrl = 'https://github.com/sayyam/instagramapi.git'
+
+    libraryVersion = '0.0.1'
+
+    developerId = 'sayyam'
+    developerName = 'Sayyam mehmood'
+    developerEmail = 'sayyam.mehmood@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -25,3 +49,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
 }
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
