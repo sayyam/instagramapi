@@ -23,7 +23,7 @@ public class IGUser implements Serializable {
     @SerializedName("website")
     String website;
     @SerializedName("counts")
-    InstagramUserCounts counts;
+    IGUserCounts counts;
 
     public String getId() {
         return id;

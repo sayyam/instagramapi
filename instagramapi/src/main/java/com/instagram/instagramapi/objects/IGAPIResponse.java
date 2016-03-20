@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Sayyam on 3/18/16.
  */
-public class InstagramAPIResponse implements Serializable {
+public class IGAPIResponse implements Serializable {
 
     IGMeta meta;
     IGPagInfo pagination;

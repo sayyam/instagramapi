@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Sayyam on 3/18/16.
  */
-public class InstagramUserCounts implements Serializable {
+public class IGUserCounts implements Serializable {
 
     @SerializedName("media")
     Integer mediaCount;

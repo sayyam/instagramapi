@@ -12,7 +12,7 @@ import com.instagram.instagramapi.engine.InstagramEngine;
 import com.instagram.instagramapi.interfaces.InstagramAuthCallbackListener;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
 import com.instagram.instagramapi.objects.InstagramException;
-import com.instagram.instagramapi.objects.InstagramSession;
+import com.instagram.instagramapi.objects.IGSession;
 import com.instagram.instagramapi.engine.InstagramKitConstants;
 import com.instagram.instagramapi.utils.Utils;
 import com.instagram.instagramapi.widgets.InstagramWebViewClient;
@@ -111,11 +111,11 @@ public class InstagramAuthActivity extends Activity {
                         if (tokenHash.size() > 0 && tokenHash.containsKey("access_token")) {
                             //TODO Save access token and return success callback
 
-                            InstagramSession instagramSession = new InstagramSession(tokenHash.get("access_token"));
+                            IGSession IGSession = new IGSession(tokenHash.get("access_token"));
 
-                            InstagramEngine.getInstance(InstagramAuthActivity.this).setSession(instagramSession);
+                            InstagramEngine.getInstance(InstagramAuthActivity.this).setSession(IGSession);
 
-                            InstagramEngine.getInstance(InstagramAuthActivity.this).getInstagramLoginButtonCallback().onSuccess(instagramSession);
+                            InstagramEngine.getInstance(InstagramAuthActivity.this).getInstagramLoginButtonCallback().onSuccess(IGSession);
                             Log.v("IntagramAuthActivity", "Access Token: " + tokenHash.get("access_token"));
 
                         } else {
@@ -155,7 +155,7 @@ public class InstagramAuthActivity extends Activity {
 
     InstagramLoginCallbackListener instagramLoginCallbackListener = new InstagramLoginCallbackListener() {
         @Override
-        public void onSuccess(InstagramSession session) {
+        public void onSuccess(IGSession session) {
 
             Bundle responseSession = new Bundle();
             responseSession.putSerializable(InstagramKitConstants.kSessionKey, session);

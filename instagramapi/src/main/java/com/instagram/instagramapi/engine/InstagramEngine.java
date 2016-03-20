@@ -4,22 +4,20 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.interfaces.InstagramAPIService;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
+import com.instagram.instagramapi.objects.IGAPIResponse;
 import com.instagram.instagramapi.objects.IGComment;
 import com.instagram.instagramapi.objects.IGLike;
 import com.instagram.instagramapi.objects.IGLocation;
 import com.instagram.instagramapi.objects.IGMedia;
 import com.instagram.instagramapi.objects.IGPostResponse;
 import com.instagram.instagramapi.objects.IGRelationship;
+import com.instagram.instagramapi.objects.IGSession;
 import com.instagram.instagramapi.objects.IGTag;
-import com.instagram.instagramapi.objects.InstagramAPIResponse;
-import com.instagram.instagramapi.objects.InstagramMedia;
-import com.instagram.instagramapi.objects.InstagramSession;
 import com.instagram.instagramapi.objects.IGUser;
 import com.instagram.instagramapi.utils.InstagramKitLoginScope;
 import com.instagram.instagramapi.utils.Utils;
@@ -29,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -60,7 +56,7 @@ public class InstagramEngine {
 
     private String appClientID;
     private String appRedirectURL;
-    private InstagramSession session;
+    private IGSession session;
     //@property (nonatomic, strong, nonnull) AFHTTPSessionManager *httpManager;
 
 
@@ -88,9 +84,8 @@ public class InstagramEngine {
 
             Bundle bundle = app.metaData;
 
-            appClientID = bundle.getString(InstagramKitConstants.kInstagramAppClientIdConfigurationKey);
-            appRedirectURL = bundle.getString(InstagramKitConstants.kInstagramAppRedirectURLConfigurationKey);
-
+            setAppClientID(bundle.getString(InstagramKitConstants.kInstagramAppClientIdConfigurationKey));
+            setAppRedirectURL(bundle.getString(InstagramKitConstants.kInstagramAppRedirectURLConfigurationKey));
 
             if (appClientID != null && !appClientID.isEmpty()) {
             } else {
@@ -116,7 +111,7 @@ public class InstagramEngine {
     }
 
 
-    public void setSession(InstagramSession _session) {
+    public void setSession(IGSession _session) {
         session = _session;
     }
 
@@ -187,117 +182,132 @@ public class InstagramEngine {
 
     //-------USER-------
 
-    /**
-     * Get currently logged in user profile.
-     *
-     * @param callback Provides an array of Media objects and Pagination info.
-     */
-    public void getUserDetails(InstagramAPIResponseCallback<IGUser> callback) {
-
-        Call<InstagramAPIResponse> call = instagramAPIService.getUser(getSession().getAccessToken());
-        call.enqueue(new InstagramAPIResponseManager<>(callback, IGUser.class));
-    }
 
     /**
-     * Get information about a user. This endpoint requires the public_content scope if the user-id is not the owner of the access_token.
+     * Get basic information about a user.
      *
-     * @param callback Provides user object of given id.
-     * @param userId   Id of user you want to get profile of.
+     * @param userId   Id of a User object.
+     * @param callback Provides a fully populated IGUser object.
      */
     public void getUserDetails(InstagramAPIResponseCallback<IGUser> callback, String userId) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getUser(userId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getUser(userId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, IGUser.class));
     }
 
     /**
      * Get the most recent media published by a user.
-     * This endpoint requires the public_content scope if the user-id is not the owner of the access_token.
      *
-     * @param callback Media list
+     * @param userId   Id of a User object.
+     * @param callback Provides an array of Media objects and IGPageInfo object.
      */
-    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback) {
-        getMediaForUser(callback, 0, null);
-    }
-
-    /**
-     * Get the most recent media published by a user.
-     * This endpoint requires the public_content scope if the user-id is not the owner of the access_token.
-     *
-     * @param callback Media list
-     */
-    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback, int count, String maxId) {
-
-        HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
-
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaForUser(getSession().getAccessToken(), pageParameters);
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<InstagramMedia>>() {
-        }.getType()));
-    }
-
-    /**
-     * Get the most recent media published by a user.This API requires the public_content scope if the user_id is not the owner of the access_token.
-     *
-     * @param callback Arraylist<InstagramMedia>
-     */
-    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback, String userId) {
+    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String userId) {
 
         getMediaForUser(callback, userId, 0, null);
     }
 
     /**
-     * Get the most recent media published by a user.This API requires the public_content scope if the user_id is not the owner of the access_token.
+     * Get the most recent media published by a user.
      *
-     * @param callback Arraylist<InstagramMedia>
+     * @param userId   Id of a IGUser object.
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of Media objects and IGPageInfo object.
      */
     //synced
-    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback, String userId, int count, String maxId) {
+    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String userId, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaForUser(userId, getSession().getAccessToken(), pageParameters);
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<InstagramMedia>>() {
+        Call<IGAPIResponse> call = instagramAPIService.getMediaForUser(userId, getSession().getAccessToken(), pageParameters);
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
         }.getType()));
     }
 
 
     /**
-     * Get the list of recent media liked by the owner of the access_token.
+     * Search for a user by name.
      *
-     * @param callback Arraylist<InstagramMedia>
+     * @param name     username string as search query.
+     * @param callback Provides an array of IGUser objects and IGPageInfo object.
      */
-    public void getUserLikedMedia(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback) {
+    //synced
+    public void searchUser(InstagramAPIResponseCallback<ArrayList<IGUser>> callback, String name) {
+
+        Call<IGAPIResponse> call = instagramAPIService.searchUser(name, getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
+        }.getType()));
+    }
+
+
+    //-------SELF-------
+
+    /**
+     * Get basic information about the authenticated user.
+     *
+     * @param callback Provides an IGUser object.
+     */
+    public void getUserDetails(InstagramAPIResponseCallback<IGUser> callback) {
+
+        Call<IGAPIResponse> call = instagramAPIService.getUser(getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, IGUser.class));
+    }
+
+    /**
+     * Get the most recent media published by the authenticated user.
+     *
+     * @param callback Provides an array of Media objects and IGPageInfo object.
+     */
+    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback) {
+        getMediaForUser(callback, 0, null);
+    }
+
+    /**
+     * Get the most recent media published by the authenticated user.
+     *
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
+     */
+    public void getMediaForUser(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, int count, String maxId) {
+
+        HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
+
+        Call<IGAPIResponse> call = instagramAPIService.getMediaForUser(getSession().getAccessToken(), pageParameters);
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
+        }.getType()));
+    }
+
+    /**
+     * See the list of media liked by the authenticated user.
+     * Private media is returned as long as the authenticated user has permission to view that media.
+     * Liked media lists are only available for the currently authenticated user.
+     *
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
+     */
+    public void getUserLikedMedia(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback) {
 
         getUserLikedMedia(callback, 0, null);
     }
 
     /**
-     * Get the list of recent media liked by the owner of the access_token.
+     * See the list of media liked by the authenticated user.
+     * Private media is returned as long as the authenticated user has permission to view that media.
+     * Liked media lists are only available for the currently authenticated user.
      *
-     * @param callback Arraylist<InstagramMedia>
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
-    public void getUserLikedMedia(InstagramAPIResponseCallback<ArrayList<InstagramMedia>> callback, int count, String maxId) {
+    public void getUserLikedMedia(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getUserLikedMedia(getSession().getAccessToken(), pageParameters);
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<InstagramMedia>>() {
+        Call<IGAPIResponse> call = instagramAPIService.getUserLikedMedia(getSession().getAccessToken(), pageParameters);
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
         }.getType()));
     }
 
-    /**
-     * Get a list of users matching the query.
-     *
-     * @param callback Arraylist<InstagramUser>
-     * @param query    term to search
-     */
-    //synced
-    public void searchUser(InstagramAPIResponseCallback<ArrayList<IGUser>> callback, String query) {
-
-        Call<InstagramAPIResponse> call = instagramAPIService.searchUser(query, getSession().getAccessToken());
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
-        }.getType()));
-    }
 
     //-------RELATIONSHIP-------
 
@@ -308,7 +318,7 @@ public class InstagramEngine {
      */
     public void getUsersIFollow(InstagramAPIResponseCallback<ArrayList<IGUser>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getFollows(getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getFollows(getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
         }.getType()));
     }
@@ -322,7 +332,7 @@ public class InstagramEngine {
      */
     public void getRelationshipStatusOfUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getRelationshipStatusOfUser(userId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getRelationshipStatusOfUser(userId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGRelationship>() {
         }.getType()));
     }
@@ -333,33 +343,52 @@ public class InstagramEngine {
      * -incoming_status: A user's relationship to you. Can be 'followed_by', 'requested_by', 'blocked_by_you', 'none'.
      *
      * @param callback Arraylist<InstagramUser>
+     * @param action   Action to perform on a relationship follow,unfollow, block,unblock,approve,ignore
+     * @param userId   Id of the User object to perform action on.
      */
-    public void updateRelationShip(InstagramAPIResponseCallback<IGRelationship> callback, String action, String userId) {
+    private void updateRelationShip(InstagramAPIResponseCallback<IGRelationship> callback, String action, String userId) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.updateRelationship(userId, action, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.updateRelationship(userId, action, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGRelationship>() {
         }.getType()));
     }
 
     //    -------RELATIONSHIP WRAPPERS-------
 
+    /**
+     * Get the list of users userId follows.
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides an array of User objects as IGUser and IGPageInfo object.
+     */
     public void getUsersFollowedByUser(InstagramAPIResponseCallback<ArrayList<IGUser>> callback, String userId) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getUsersFollowedByUser(userId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getUsersFollowedByUser(userId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
         }.getType()));
     }
 
+    /**
+     * Get the list of users this user is followed by.
+     *
+     * @param callback Provides an array of User objects as IGUser and IGPageInfo object.
+     */
     public void getFollowedBy(InstagramAPIResponseCallback<ArrayList<IGUser>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getFollowedBy(getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getFollowedBy(getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
         }.getType()));
     }
 
+    /**
+     * Get the list of users userId is followed by.
+     *
+     * @param userId   Id of the IGUser object.
+     * @param callback Provides an array of User objects as IGUser and IGPageInfo.
+     */
     public void getFollowersOfUser(InstagramAPIResponseCallback<ArrayList<IGUser>> callback, String userId) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getFollowersOfUser(userId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getFollowersOfUser(userId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
         }.getType()));
     }
@@ -367,35 +396,108 @@ public class InstagramEngine {
     /**
      * List the users who have requested this user's permission to follow.
      *
-     * @param callback Arraylist<InstagramUser>
+     * @param callback Provides an array of User objects as IGUser and IGPageInfo.
      */
     public void getFollowRequests(InstagramAPIResponseCallback<ArrayList<IGUser>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getFollowRequests(getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getFollowRequests(getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGUser>>() {
         }.getType()));
     }
 
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Follow a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
     public void followUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionFollow, userId);
     }
 
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Unfollow a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
     public void unFollowUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionUnfollow, userId);
     }
 
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Block a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
     public void blockUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionBlock, userId);
     }
+
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Unblock a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
 
     public void unblockUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionUnblock, userId);
     }
 
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Approve a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
     public void approveUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionApprove, userId);
     }
 
+    /**
+     * Modify the relationship between the current user and the target user.
+     * Ignore a user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeRelationships during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
+     *
+     * @param userId   Id of the User object.
+     * @param callback Provides the server response as IGRelationship.
+     */
     public void ignoreUser(InstagramAPIResponseCallback<IGRelationship> callback, String userId) {
         updateRelationShip(callback, InstagramKitConstants.kRelationshipActionIgnore, userId);
     }
@@ -403,17 +505,18 @@ public class InstagramEngine {
 
     //-------MEDIA-------
 
+
     /**
      * Get information about a Media object.
      *
-     * @param mediaId  Id of a Media object.
-     * @param callback callback.
+     * @param mediaId  Id of a IGMedia object.
+     * @param callback Provides a fully populated IGMedia object.
      */
-    public void getMedia(String mediaId, InstagramAPIResponseCallback<InstagramMedia> callback) {
+    public void getMedia(String mediaId, InstagramAPIResponseCallback<IGMedia> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMedia(mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getMedia(mediaId, getSession().getAccessToken());
 
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<InstagramMedia>() {
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGMedia>() {
         }.getType()));
     }
 
@@ -424,10 +527,10 @@ public class InstagramEngine {
      *
      * @param callback Arraylist<InstagramUser>
      */
-    public void getMediaByShortCode(InstagramAPIResponseCallback<InstagramMedia> callback, String shortCode) {
+    public void getMediaByShortCode(InstagramAPIResponseCallback<IGMedia> callback, String shortCode) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaByShortCode(shortCode, getSession().getAccessToken());
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<InstagramMedia>() {
+        Call<IGAPIResponse> call = instagramAPIService.getMediaByShortCode(shortCode, getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGMedia>() {
         }.getType()));
     }
 
@@ -436,7 +539,7 @@ public class InstagramEngine {
      * Can return mix of image and video types.
      *
      * @param location Geographic Location coordinates.
-     * @param callback Provides an array of Media objects and Pagination info.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
     public void getMediaAtLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, IGLocation location) {
         getMediaAtLocation(callback, location, 0, null);
@@ -447,23 +550,26 @@ public class InstagramEngine {
      * Can return mix of image and video types.
      *
      * @param location Geographic Location coordinates.
-     * @param callback Provides an array of Media objects and Pagination info.
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
     public void getMediaAtLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, IGLocation location, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaAtLocation(location.getLatitude(), location.getLongitude(), getSession().getAccessToken(), pageParameters);
+        Call<IGAPIResponse> call = instagramAPIService.getMediaAtLocation(location.getLatitude(), location.getLongitude(), getSession().getAccessToken(), pageParameters);
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
         }.getType()));
     }
+
 
     /**
      * Search for media in a given area. The default time span is set to 5 days.
      * Can return mix of image and video types.
      *
      * @param location Geographic Location coordinates.
-     * @param callback Provides an array of Media objects and Pagination info.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
     public void getMediaAtLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, Float distance, IGLocation location) {
         getMediaAtLocation(callback, distance, location, 0, null);
@@ -474,63 +580,76 @@ public class InstagramEngine {
      * Can return mix of image and video types.
      *
      * @param location Geographic Location coordinates.
-     * @param callback Provides an array of Media objects and Pagination info.
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param distance Distance in metres to from location - max 5000 (5km), default is 1000 (1km) in other methods
+     * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
     public void getMediaAtLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, Float distance, IGLocation location, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaAtLocation(distance, location.getLatitude(), location.getLongitude(), getSession().getAccessToken(), pageParameters);
+        Call<IGAPIResponse> call = instagramAPIService.getMediaAtLocation(distance, location.getLatitude(), location.getLongitude(), getSession().getAccessToken(), pageParameters);
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
         }.getType()));
     }
 
 
-
 //    -------COMMENT-------
 
     /**
-     * Get a list of recent comments on a media object. The public_content permission scope is required to get comments for a media that does not belong to the owner of the access_token.
+     * Get a list of recent comments on a media object.
      *
-     * @param mediaId  Id of media you want to get comments of.
-     * @param callback
+     * @param mediaId  Id of the Media object.
+     * @param callback Provides an array of IGComment objects.
      */
     public void getCommentsOnMedia(String mediaId, InstagramAPIResponseCallback<ArrayList<IGComment>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getCommentsOnMedia(mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getCommentsOnMedia(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGComment>>() {
         }.getType()));
     }
 
     /**
      * Create a comment on a media object with the following rules:
-     * -The total length of the comment cannot exceed 300 characters.
-     * -The comment cannot contain more than 4 hashtags.
-     * -The comment cannot contain more than 1 URL.
-     * -The comment cannot consist of all capital letters.
-     * The public_content permission scope is required to create comments on a media that does not belong to the owner of the access_token.
+     * - The total length of the comment cannot exceed 300 characters.
+     * - The comment cannot contain more than 4 hashtags.
+     * - The comment cannot contain more than 1 URL.
+     * - The comment cannot consist of all capital letters.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeComments during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
      *
-     * @param commentText Comment text you want to post on media.
-     * @param mediaId     Id of media to post comment on.
-     * @param callback
+     * @param commentText The comment text.
+     * @param mediaId     Id of the Media object.
+     * @param callback    Invoked on successfully creating comment.
      */
     public void postCommentOnMedia(String commentText, String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.postCommentOnMedia(commentText, mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.postCommentOnMedia(commentText, mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
         }.getType()));
     }
 
     /**
-     * Remove a comment either on the authenticated user's media object or authored by the authenticated user.
+     * Remove a comment either on the authenticated user's media object
+     * or authored by the authenticated user.
+     * <p/>
+     * REQUIREMENTS : InstagramKitLoginScopeComments during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
      *
-     * @param commentId Id of comment to delete.
-     * @param mediaId   Id of media to remove comment from.
-     * @param callback
+     * @param commentId Id of the Comment object.
+     * @param mediaId   Id of the Media object.
+     * @param callback  Invoked on successfully deleting comment.
      */
+    //TODO: Handle exception for REQUIREMENTS
     public void removeComment(String commentId, String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.removeComment(commentId, mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.removeComment(commentId, mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
         }.getType()));
     }
@@ -540,39 +659,46 @@ public class InstagramEngine {
     /**
      * Get a list of users who have liked this media.
      *
-     * @param mediaId  Id of media you want to get comments of.
-     * @param callback
+     * @param mediaId  Id of the Media object.
+     * @param callback Provides an array of IGLike(subset of user)  objects.
      */
     public void getLikesOnMedia(String mediaId, InstagramAPIResponseCallback<ArrayList<IGLike>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getLikesOnMedia(mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getLikesOnMedia(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLike>>() {
         }.getType()));
     }
 
     /**
      * Set a like on this media by the currently authenticated user.
-     * The public_content permission scope is required to create likes on a media that does not belong to the owner of the access_token.
+     * REQUIREMENTS : InstagramKitLoginScopeLikes during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
      *
-     * @param mediaId  Id of media to post comment on.
-     * @param callback
+     * @param mediaId  Id of the Media object.
+     * @param callback Invoked on successfully liking a Media.
      */
     public void likeMedia(String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.postMediaLike(mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.postMediaLike(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
         }.getType()));
     }
 
     /**
-     * Remove a like on this media by the currently authenticated user. The public_content permission scope is required to delete likes on a media that does not belong to the owner of the access_token.
+     * Remove a like on this media by the currently authenticated user.
+     * REQUIREMENTS : InstagramKitLoginScopeLikes during authentication.
+     * <p/>
+     * To request access to this endpoint, please complete this form -
+     * https://help.instagram.com/contact/185819881608116
      *
-     * @param mediaId  Id of media to remove likes from.
-     * @param callback
+     * @param mediaId  Id of the Media object.
+     * @param callback Invoked on successfully un-liking a Media.
      */
     public void unlikeMedia(String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.deleteMediaLikes(mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.deleteMediaLikes(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
         }.getType()));
     }
@@ -583,12 +709,12 @@ public class InstagramEngine {
     /**
      * Get information about a tag object.
      *
-     * @param tagName  Id of media you want to get comments of.
-     * @param callback
+     * @param name     Name of a Tag object.
+     * @param callback Provides a IGTag object.
      */
-    public void getTagDetails(String tagName, InstagramAPIResponseCallback<IGTag> callback) {
+    public void getTagDetails(String name, InstagramAPIResponseCallback<IGTag> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getTagDetails(tagName, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getTagDetails(name, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGTag>() {
         }.getType()));
     }
@@ -596,25 +722,27 @@ public class InstagramEngine {
     /**
      * Get a list of recently tagged media.
      *
-     * @param tagName  tag string for which you want recent media.
-     * @param callback
+     * @param name     A valid tag name without a leading #. (eg. snowy, nofilter)
+     * @param callback Provides an array of IGMedia objects and IGPageInfo info.
      */
-    public void getMediaWithTagName(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String tagName) {
+    public void getMediaWithTagName(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String name) {
 
-        getMediaWithTagName(callback, tagName, 0, null);
+        getMediaWithTagName(callback, name, 0, null);
     }
 
     /**
      * Get a list of recently tagged media.
      *
-     * @param tagName  tag string for which you want recent media.
-     * @param callback
+     * @param tag      Name of a Tag object.
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of IGMedia objects and IGPageInfo info.
      */
-    public void getMediaWithTagName(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String tagName, int count, String maxId) {
+    public void getMediaWithTagName(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String tag, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getMediaWithTagName(tagName, getSession().getAccessToken(), pageParameters);
+        Call<IGAPIResponse> call = instagramAPIService.getMediaWithTagName(tag, getSession().getAccessToken(), pageParameters);
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
         }.getType()));
     }
@@ -622,27 +750,27 @@ public class InstagramEngine {
     /**
      * Search for tags by name.
      *
-     * @param tagName  string you want to get related tags.
-     * @param callback
+     * @param name     A valid tag name without a leading #. (eg. snowy, nofilter)
+     * @param callback Provides an array of IGTag objects and IGPageInfo info.
      */
-    public void searchTagsWithName(InstagramAPIResponseCallback<ArrayList<IGTag>> callback, String tagName) {
+    public void searchTagsWithName(InstagramAPIResponseCallback<ArrayList<IGTag>> callback, String name) {
 
-        searchTagsWithName(callback, tagName, 0, null);
+        searchTagsWithName(callback, name, 0, null);
     }
 
     /**
      * Search for tags by name.
      *
-     * @param callback
-     * @param tagName  string you want to get related tags.
-     * @param count    number of items you want to fetch
-     * @param maxId
+     * @param name     A valid tag name without a leading #. (eg. snowy, nofilter)
+     * @param count    Count of objects to fetch.
+     * @param maxId    The nextMaxId from the previously obtained IGPage object.
+     * @param callback Provides an array of IGTag objects and IGPageInfo info.
      */
-    public void searchTagsWithName(InstagramAPIResponseCallback<ArrayList<IGTag>> callback, String tagName, int count, String maxId) {
+    public void searchTagsWithName(InstagramAPIResponseCallback<ArrayList<IGTag>> callback, String name, int count, String maxId) {
 
         HashMap<String, String> pageParameters = parametersFromCount(count, maxId, InstagramKitConstants.kPaginationKeyMaxId);
 
-        Call<InstagramAPIResponse> call = instagramAPIService.searchTagsWithName(tagName, getSession().getAccessToken(), pageParameters);
+        Call<IGAPIResponse> call = instagramAPIService.searchTagsWithName(name, getSession().getAccessToken(), pageParameters);
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGTag>>() {
         }.getType()));
     }
@@ -650,59 +778,60 @@ public class InstagramEngine {
     //    -------LOCATION RAW-------
 
     /**
-     * Get information about a location.
+     * Search for a location by geographic coordinate.
      *
-     * @param locationId Id of location you want to get information of.
-     * @param callback
+     * @param location Geographic Location coordinates.
+     * @param callback Provides an array of IGLocation objects.
+     */
+    //synced
+    public void searchLocationsAtLocation(IGLocation location, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
+
+        Call<IGAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
+        }.getType()));
+    }
+
+    /**
+     * Search for a location by geographic coordinate.
+     *
+     * @param location         Geographic Location coordinates.
+     * @param distanceInMeters Default is 1000, max distance is 5000.
+     * @param callback         Provides an array of IGLocation objects.
+     */
+    //synced
+    public void searchLocationsAtLocation(IGLocation location, int distanceInMeters, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
+
+        Call<IGAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), distanceInMeters, getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
+        }.getType()));
+    }
+
+    /**
+     * Get information about a Location.
+     *
+     * @param locationId Id of a IGLocation object.
+     * @param callback   Provides a IGLocation object.
      */
     //synced getLocationWithId
     public void getLocation(String locationId, InstagramAPIResponseCallback<IGLocation> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getLocation(locationId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getLocation(locationId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGLocation>() {
         }.getType()));
     }
 
 
     /**
-     * Get a list of recent media objects from a given location.
+     * Get a list of recent IGMedia objects from a given location.
      *
      * @param locationId Id of location you want the recent media from.
-     * @param callback
+     * @param callback Provides an array of IGMedia objects and IGPageInfo info
      */
+
     public void getRecentMediaFromLocation(String locationId, InstagramAPIResponseCallback<ArrayList<IGMedia>> callback) {
 
-        Call<InstagramAPIResponse> call = instagramAPIService.getRecentMediaFromLocation(locationId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.getRecentMediaFromLocation(locationId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
-        }.getType()));
-    }
-
-
-    /**
-     * Search for a location by geographic coordinate.
-     *
-     * @param location geographic coordinate you want to searach locations around.
-     * @param callback
-     */
-    //synced
-    public void searchLocation(IGLocation location, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
-
-        Call<InstagramAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), getSession().getAccessToken());
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
-        }.getType()));
-    }
-
-    /**
-     * Search for a location by geographic coordinate.
-     *
-     * @param location geographic coordinate you want to searach locations around.
-     * @param callback
-     */
-    //synced
-    public void searchLocation(IGLocation location, int distanceInMeters, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
-
-        Call<InstagramAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), distanceInMeters, getSession().getAccessToken());
-        call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
         }.getType()));
     }
 
@@ -713,26 +842,11 @@ public class InstagramEngine {
     //=======================================================================================================================
 
 
-    private Map<String, String> mapWithAccessTokenAndParameters(Map<String, String> params) {
-
-        if (null != session) {
-            params.put(InstagramKitConstants.kKeyAccessToken, session.getAccessToken());
-        } else {
-            params.put(InstagramKitConstants.kKeyClientID, appClientID);
-        }
-
-        return params;
-    }
-
-    public void getPaginatedPath(String path, Map<String, String> parameters, Class modelClass, Callback callback) {
-
-    }
-
     public String getAppRedirectURL() {
         return appRedirectURL;
     }
 
-    public void setAppRedirectURL(String appRedirectURL) {
+    private void setAppRedirectURL(String appRedirectURL) {
         this.appRedirectURL = appRedirectURL;
     }
 
@@ -740,11 +854,11 @@ public class InstagramEngine {
         return appClientID;
     }
 
-    public void setAppClientID(String appClientID) {
+    private void setAppClientID(String appClientID) {
         this.appClientID = appClientID;
     }
 
-    public InstagramSession getSession() {
+    public IGSession getSession() {
         return session;
     }
 
@@ -752,19 +866,13 @@ public class InstagramEngine {
         return instagramLoginButtonCallback;
     }
 
+    /**
+     * This method is used internal for handling login responses.
+     *
+     * @param instagramLoginButtonCallback
+     */
     public void setInstagramLoginButtonCallback(InstagramLoginCallbackListener instagramLoginButtonCallback) {
         this.instagramLoginButtonCallback = instagramLoginButtonCallback;
     }
 
-    Callback<InstagramAPIResponse> instagramMediaCallback = new Callback<InstagramAPIResponse>() {
-        @Override
-        public void onResponse(Call<InstagramAPIResponse> call, Response<InstagramAPIResponse> response) {
-            Log.v("SampleActivity", "onResponse:" + response.body().toString());
-        }
-
-        @Override
-        public void onFailure(Call<InstagramAPIResponse> call, Throwable t) {
-            Log.v("SampleActivity", "onFailure:");
-        }
-    };
 }

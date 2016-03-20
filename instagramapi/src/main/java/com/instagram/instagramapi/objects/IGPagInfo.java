@@ -20,6 +20,10 @@ public class IGPagInfo {
     @Expose
     String nextMaxId;
 
+    @SerializedName("type")
+    @Expose
+    Class type;
+
     public String getNextURL() {
         return nextURL;
     }
@@ -42,5 +46,13 @@ public class IGPagInfo {
 
     public void setNextMinId(String nextMinId) {
         this.nextMinId = nextMinId;
+    }
+
+    public Class getType() {
+        return type;
+    }
+
+    public void setType(Class type) {
+        this.type = type;
     }
 }

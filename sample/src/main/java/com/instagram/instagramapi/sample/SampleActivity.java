@@ -13,11 +13,11 @@ import com.instagram.instagramapi.engine.InstagramEngine;
 import com.instagram.instagramapi.engine.InstagramKitConstants;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
+import com.instagram.instagramapi.objects.IGMedia;
 import com.instagram.instagramapi.objects.IGPagInfo;
 import com.instagram.instagramapi.objects.IGRelationship;
 import com.instagram.instagramapi.objects.InstagramException;
-import com.instagram.instagramapi.objects.InstagramMedia;
-import com.instagram.instagramapi.objects.InstagramSession;
+import com.instagram.instagramapi.objects.IGSession;
 import com.instagram.instagramapi.objects.IGUser;
 import com.instagram.instagramapi.utils.InstagramKitLoginScope;
 import com.instagram.instagramapi.widgets.InstagramLoginButton;
@@ -47,7 +47,7 @@ public class SampleActivity extends AppCompatActivity {
 
     InstagramLoginCallbackListener instagramLoginCallbackListener = new InstagramLoginCallbackListener() {
         @Override
-        public void onSuccess(InstagramSession session) {
+        public void onSuccess(IGSession session) {
 
             Toast.makeText(SampleActivity.this, "Wow!!! User trusts you :) " + session.getAccessToken(),
                     Toast.LENGTH_LONG).show();
@@ -106,7 +106,7 @@ public class SampleActivity extends AppCompatActivity {
 
                     if (bundle.containsKey(InstagramKitConstants.kSessionKey)) {
 
-                        InstagramSession session = (InstagramSession) bundle.getSerializable(InstagramKitConstants.kSessionKey);
+                        IGSession session = (IGSession) bundle.getSerializable(InstagramKitConstants.kSessionKey);
 
                         Toast.makeText(SampleActivity.this, "Woohooo!!! User trusts you :) " + session.getAccessToken(),
                                 Toast.LENGTH_LONG).show();
@@ -132,14 +132,14 @@ public class SampleActivity extends AppCompatActivity {
 
     }
 
-    InstagramAPIResponseCallback<ArrayList<InstagramMedia>> mediaListApiResponseCallback = new InstagramAPIResponseCallback<ArrayList<InstagramMedia>>() {
+    InstagramAPIResponseCallback<ArrayList<IGMedia>> mediaListApiResponseCallback = new InstagramAPIResponseCallback<ArrayList<IGMedia>>() {
         @Override
-        public void onResponse(ArrayList<InstagramMedia> responseArray, IGPagInfo pageInfo) {
+        public void onResponse(ArrayList<IGMedia> responseArray, IGPagInfo pageInfo) {
             Log.v("SampleActivity", "Media: " + responseArray.size());
 
             if (responseArray.size() > 0) {
 
-                for (InstagramMedia media : responseArray) {
+                for (IGMedia media : responseArray) {
 
                     Toast.makeText(SampleActivity.this, "Media Caption: " + media.getCaption().getText(),
                             Toast.LENGTH_LONG).show();
@@ -193,9 +193,9 @@ public class SampleActivity extends AppCompatActivity {
         }
     };
 
-    InstagramAPIResponseCallback<ArrayList<InstagramMedia>> instagramMediaResponseCallback = new InstagramAPIResponseCallback<ArrayList<InstagramMedia>>() {
+    InstagramAPIResponseCallback<ArrayList<IGMedia>> instagramMediaResponseCallback = new InstagramAPIResponseCallback<ArrayList<IGMedia>>() {
         @Override
-        public void onResponse(ArrayList<InstagramMedia> responseObject, IGPagInfo pageInfo) {
+        public void onResponse(ArrayList<IGMedia> responseObject, IGPagInfo pageInfo) {
             Log.v("SampleActivity", "Id:" + responseObject.size());
 
             Toast.makeText(SampleActivity.this, "Id: " + responseObject.size(),

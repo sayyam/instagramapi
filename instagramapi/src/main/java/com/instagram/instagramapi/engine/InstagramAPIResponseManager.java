@@ -3,7 +3,7 @@ package com.instagram.instagramapi.engine;
 import com.google.gson.Gson;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.objects.IGPagInfo;
-import com.instagram.instagramapi.objects.InstagramAPIResponse;
+import com.instagram.instagramapi.objects.IGAPIResponse;
 import com.instagram.instagramapi.objects.InstagramException;
 
 import java.lang.reflect.Type;
@@ -15,7 +15,7 @@ import retrofit2.Response;
 /**
  * Created by Sayyam on 3/18/16.
  */
-public class InstagramAPIResponseManager<T> implements Callback<InstagramAPIResponse> {
+public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
 
     private Type type;
 
@@ -31,12 +31,12 @@ public class InstagramAPIResponseManager<T> implements Callback<InstagramAPIResp
     }
 
     @Override
-    public void onFailure(Call<InstagramAPIResponse> call, Throwable t) {
+    public void onFailure(Call<IGAPIResponse> call, Throwable t) {
         instagramAPIResponseCallback.onFailure(new InstagramException(t.getMessage()));
     }
 
     @Override
-    public void onResponse(Call<InstagramAPIResponse> call, Response<InstagramAPIResponse> response) {
+    public void onResponse(Call<IGAPIResponse> call, Response<IGAPIResponse> response) {
 
         try {
 

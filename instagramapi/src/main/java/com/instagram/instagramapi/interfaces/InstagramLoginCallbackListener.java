@@ -5,7 +5,7 @@ package com.instagram.instagramapi.interfaces;
  */
 
 import com.instagram.instagramapi.objects.InstagramException;
-import com.instagram.instagramapi.objects.InstagramSession;
+import com.instagram.instagramapi.objects.IGSession;
 
 /**
  * A callback class for the Instagram SDK.
@@ -16,7 +16,7 @@ public interface InstagramLoginCallbackListener {
      *
      * @param result Result from the dialog
      */
-    public void onSuccess(InstagramSession result);
+    public void onSuccess(IGSession result);
 
     /**
      * Called when the dialog is canceled.
