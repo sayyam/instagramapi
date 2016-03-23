@@ -53,7 +53,7 @@ public class SampleActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
 //          InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback,"3043977032");
             InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback);
-//            InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(instagramMediaResponseCallback);
+//          InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(instagramMediaResponseCallback);
 
         }
 
@@ -120,9 +120,19 @@ public class SampleActivity extends AppCompatActivity {
 //-->Test it            InstagramEngine.getInstance(SampleActivity.this).getUsersIFollow(instagramUsersListResponseCallback);
 //                      InstagramEngine.getInstance(SampleActivity.this).getRelationship(instagramRelationshipResponseCallback,"3043977032");
 //                      InstagramEngine.getInstance(SampleActivity.this).getUsersIFollow(followedUsersApiResponseCallback);
-                        InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(mediaListApiResponseCallback, 5, null);
+//                      InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(mediaListApiResponseCallback, 5, null);
+//                        InstagramEngine.getInstance(SampleActivity.this).getUserLikedMedia(likedMediaApiResponseCallback);
+//                        InstagramEngine.getInstance(SampleActivity.this).getUsersIFollow(usersIFollowApiResponseCallback);
+                        InstagramEngine.getInstance(SampleActivity.this).getRelationshipStatusOfUser(usersRelationshipApiResponseCallback, "");
+//                      InstagramEngine.getInstance(SampleActivity.this).getUsersFollowedByUser
 //                      InstagramEngine.getInstance(SampleActivity.this).
 //                      InstagramEngine.getInstance(SampleActivity.this).
+//                      InstagramEngine.getInstance(SampleActivity.this).
+//                      InstagramEngine.getInstance(SampleActivity.this).
+//                      InstagramEngine.getInstance(SampleActivity.this).
+//                      InstagramEngine.getInstance(SampleActivity.this).
+//                      InstagramEngine.getInstance(SampleActivity.this).
+
                     }
                 }
                 break;
@@ -131,6 +141,78 @@ public class SampleActivity extends AppCompatActivity {
         }
 
     }
+
+
+    InstagramAPIResponseCallback<IGRelationship> usersRelationshipApiResponseCallback = new InstagramAPIResponseCallback<IGRelationship>() {
+        @Override
+        public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
+
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+                    Toast.LENGTH_LONG).show();
+            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+
+        }
+
+        @Override
+        public void onFailure(InstagramException exception) {
+            Log.v("SampleActivity", "Exception:" + exception.getMessage());
+        }
+    };
+
+    InstagramAPIResponseCallback<ArrayList<IGUser>> usersIFollowApiResponseCallback = new InstagramAPIResponseCallback<ArrayList<IGUser>>() {
+        @Override
+        public void onResponse(ArrayList<IGUser> responseArray, IGPagInfo pageInfo) {
+            Log.v("SampleActivity", "Users I Follow: " + responseArray.size());
+
+            if (responseArray.size() > 0) {
+
+                for (IGUser user : responseArray) {
+
+                    Toast.makeText(SampleActivity.this, "User: " + user.getUsername(),
+                            Toast.LENGTH_LONG).show();
+                    Log.v("SampleActivity", "User: " + user.getUsername());
+
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(InstagramException exception) {
+            Log.v("SampleActivity", "Exception:" + exception.getMessage());
+        }
+    };
+
+
+    InstagramAPIResponseCallback<ArrayList<IGMedia>> likedMediaApiResponseCallback = new InstagramAPIResponseCallback<ArrayList<IGMedia>>() {
+        @Override
+        public void onResponse(ArrayList<IGMedia> responseArray, IGPagInfo pageInfo) {
+            Log.v("SampleActivity", "Liked Media: " + responseArray.size());
+
+            if (responseArray.size() > 0) {
+
+                for (IGMedia media : responseArray) {
+
+                    Toast.makeText(SampleActivity.this, "Media Caption: " + media.getCaption().getText(),
+                            Toast.LENGTH_LONG).show();
+                    Log.v("SampleActivity", "Media Caption: " + media.getCaption().getText());
+                    Log.v("SampleActivity", "Media Type: " + media.getType());
+                    if (media.getType().equals(InstagramKitConstants.kMediaTypeImage)) {
+                        Log.v("SampleActivity", "Media Photo: " + media.getImages().getStandardResolution().getUrl() + "\n");
+                    }
+                }
+            }
+
+            if (null != pageInfo && null != pageInfo.getNextMaxId() && !pageInfo.getNextMaxId().isEmpty()) {
+                InstagramEngine.getInstance(SampleActivity.this).getUserLikedMedia(likedMediaApiResponseCallback, 5, pageInfo.getNextMaxId());
+            }
+
+        }
+
+        @Override
+        public void onFailure(InstagramException exception) {
+            Log.v("SampleActivity", "Exception:" + exception.getMessage());
+        }
+    };
 
     InstagramAPIResponseCallback<ArrayList<IGMedia>> mediaListApiResponseCallback = new InstagramAPIResponseCallback<ArrayList<IGMedia>>() {
         @Override

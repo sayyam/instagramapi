@@ -24,6 +24,7 @@ public class IGUser implements Serializable {
     String website;
     @SerializedName("counts")
     IGUserCounts counts;
+    String accessToken;
 
     public String getId() {
         return id;
@@ -95,5 +96,13 @@ public class IGUser implements Serializable {
 
     public Integer getFollowedByCount() {
         return counts.getFollowedByCount();
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

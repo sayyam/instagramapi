@@ -76,7 +76,7 @@ public class InstagramEngine {
 
         instagramAPIService = retrofit.create(InstagramAPIService.class);
 
-        ApplicationInfo app = null;
+        ApplicationInfo app;
 
         try {
 
@@ -182,6 +182,17 @@ public class InstagramEngine {
 
     //-------USER-------
 
+    /**
+     * Get basic information about a user.
+     *
+     * @param userId   Id of a User object.
+     * @param callback Provides a fully populated IGUser object.
+     */
+    public void requestURL(InstagramAPIResponseCallback<IGUser> callback, String userId) {
+
+        Call<IGAPIResponse> call = instagramAPIService.getUser(userId, getSession().getAccessToken());
+        call.enqueue(new InstagramAPIResponseManager<>(callback, IGUser.class));
+    }
 
     /**
      * Get basic information about a user.

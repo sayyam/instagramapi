@@ -40,10 +40,7 @@ public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
 
         try {
 
-            //String meta = new Gson().toJson(response.body().getMeta());
-            //IGMeta meta = response.body().getMeta();
-
-            if (/*igMeta.getCode().equals("200")*/ response.code() == 200) {
+            if (response.code() == 200) {
 
                 String data = new Gson().toJson(response.body().getData());
                 IGPagInfo pagination = response.body().getPagination();
