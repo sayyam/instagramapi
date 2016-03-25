@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -64,7 +63,7 @@ public interface InstagramAPIService {
     Call<IGAPIResponse> getRelationshipStatusOfUser(@Path("user_id") String userId, @Query("access_token") String accessToken);
 
     @POST("users/{user_id}/relationship")
-    Call<IGAPIResponse> updateRelationship(@Field("first_name") String first, @Path("user_id") String userId, @Query("access_token") String accessToken);
+    Call<IGAPIResponse> updateRelationship(@Path("user_id") String userId, @Query("action") String action, @Query("access_token") String accessToken);
 
 
     //----MEDIA----

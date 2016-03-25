@@ -176,7 +176,7 @@ public class SampleActivity extends AppCompatActivity {
             case R.id.followUser:
                 InstagramEngine.getInstance(SampleActivity.this).followUser(followUserApiResponseCallback, "");
                 break;
-            case R.id.unFollowUser:
+            case R.id.unFollowUser://test this api exception
                 InstagramEngine.getInstance(SampleActivity.this).unFollowUser(unFollowUserApiResponseCallback, "userId");
                 break;
             case R.id.blockUser:
@@ -629,7 +629,7 @@ public class SampleActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(InstagramException exception) {
-            Log.v("SampleActivity", "Exception:" + exception.getMessage());
+            Log.v("SampleActivity", "Exception:" + exception.getErrorReason());
         }
     };
 
