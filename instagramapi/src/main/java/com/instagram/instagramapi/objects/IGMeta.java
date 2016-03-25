@@ -16,9 +16,9 @@ public class IGMeta implements Serializable {
     @SerializedName("code")
     @Expose
     Integer code;
-    @SerializedName("errorMessage")
+    @SerializedName("error_message")
     @Expose
-    String error_message;
+    String errorMessage;
 
     public String getErrorType() {
         return errorType;
@@ -36,11 +36,11 @@ public class IGMeta implements Serializable {
         this.code = code;
     }
 
-    public String getError_message() {
-        return error_message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setError_message(String error_message) {
-        this.error_message = error_message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

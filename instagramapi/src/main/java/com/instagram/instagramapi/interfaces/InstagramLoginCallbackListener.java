@@ -4,7 +4,7 @@ package com.instagram.instagramapi.interfaces;
  * Created by Sayyam on 3/17/16.
  */
 
-import com.instagram.instagramapi.objects.InstagramException;
+import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.objects.IGSession;
 
 /**

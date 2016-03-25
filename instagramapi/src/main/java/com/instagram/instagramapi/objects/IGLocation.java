@@ -21,6 +21,14 @@ public class IGLocation {
     @Expose
     private Integer id;
 
+    public IGLocation() {
+    }
+
+    public IGLocation(Double latitude, Double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     /**
      * @return The latitude
      */

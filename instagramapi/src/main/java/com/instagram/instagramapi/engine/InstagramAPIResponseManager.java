@@ -2,9 +2,10 @@ package com.instagram.instagramapi.engine;
 
 import com.google.gson.Gson;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
+import com.instagram.instagramapi.objects.IGMeta;
 import com.instagram.instagramapi.objects.IGPagInfo;
 import com.instagram.instagramapi.objects.IGAPIResponse;
-import com.instagram.instagramapi.objects.InstagramException;
+import com.instagram.instagramapi.exceptions.InstagramException;
 
 import java.lang.reflect.Type;
 
@@ -43,6 +44,7 @@ public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
             if (response.code() == 200) {
 
                 String data = new Gson().toJson(response.body().getData());
+
                 IGPagInfo pagination = response.body().getPagination();
 
                 if (null != data && !data.isEmpty()) {
@@ -54,7 +56,23 @@ public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
                     instagramAPIResponseCallback.onFailure(new InstagramException("Invalid Response"));
                 }
             } else {
-                instagramAPIResponseCallback.onFailure(new InstagramException("Please check if you have valid access token for this request"));
+
+                if (null != response.errorBody()) {
+
+                    String stringMeta = response.errorBody().string();
+
+                    IGAPIResponse apiResponse = new Gson().fromJson(stringMeta, IGAPIResponse.class);
+                    IGMeta meta = apiResponse.getMeta();
+
+                    if (null != meta) {
+                        instagramAPIResponseCallback.onFailure(new InstagramException(meta.getErrorType(), meta.getErrorMessage(), meta.getErrorMessage()));
+
+                    } else {
+                        instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does you see this message and try again."));
+                    }
+                } else {
+                    instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does you see this message and try again."));
+                }
             }
 
         } catch (Exception e) {

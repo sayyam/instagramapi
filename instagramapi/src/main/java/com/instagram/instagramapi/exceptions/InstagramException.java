@@ -1,4 +1,4 @@
-package com.instagram.instagramapi.objects;
+package com.instagram.instagramapi.exceptions;
 
 /**
  * Created by Sayyam on 3/18/16.

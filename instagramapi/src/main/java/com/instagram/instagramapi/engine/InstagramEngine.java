@@ -1,10 +1,12 @@
 package com.instagram.instagramapi.engine;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.interfaces.InstagramAPIService;
@@ -66,6 +68,7 @@ public class InstagramEngine {
     private InstagramLoginCallbackListener instagramLoginButtonCallback;
 
     private static Context mContext;
+    private SharedPreferences sharedPref;
 
     private InstagramEngine() {
 
@@ -75,6 +78,8 @@ public class InstagramEngine {
                 .build();
 
         instagramAPIService = retrofit.create(InstagramAPIService.class);
+
+        sharedPref = mContext.getSharedPreferences(InstagramKitConstants.kSessionKey, Context.MODE_PRIVATE);
 
         ApplicationInfo app;
 
@@ -110,9 +115,53 @@ public class InstagramEngine {
         return instance;
     }
 
+    public String getAppRedirectURL() {
+        return appRedirectURL;
+    }
+
+    private void setAppRedirectURL(String appRedirectURL) {
+        this.appRedirectURL = appRedirectURL;
+    }
+
+    public String getAppClientID() {
+        return appClientID;
+    }
+
+    private void setAppClientID(String appClientID) {
+        this.appClientID = appClientID;
+    }
+
+    public IGSession getSession() {
+
+        if (null != session) {
+            return session;
+        } else {
+
+            String stringSession = readFromSharedPreferences(InstagramKitConstants.kSessionKey);
+
+            if (null != stringSession) {
+                session = new Gson().fromJson(stringSession, IGSession.class);
+                if (null != session && null != session.getAccessToken() && !session.getAccessToken().isEmpty())
+                    return session;
+            }
+
+            throw new RuntimeException("Invalid session, Please get your application authorized by user.");
+        }
+    }
+
 
     public void setSession(IGSession _session) {
         session = _session;
+        if (null == session) {
+            removeFromSharedPreferences(InstagramKitConstants.kSessionKey);
+        } else {
+            saveOnSharedPreferences(InstagramKitConstants.kSessionKey, new Gson().toJson(session));
+        }
+
+    }
+
+    public void logout() {
+        setSession(null);
     }
 
 
@@ -128,9 +177,25 @@ public class InstagramEngine {
         String authRequestURL = Utils.constructURL(InstagramKitConstants.kInstagramKitAuthorizationURL, parameters);
 
         return authRequestURL;
-
     }
 
+    private void saveOnSharedPreferences(String key, String value) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    private String readFromSharedPreferences(String key) {
+        return sharedPref.getString(key, null);
+    }
+
+    private void removeFromSharedPreferences(String key) {
+        if (sharedPref.contains(InstagramKitConstants.kSessionKey)) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(key);
+            editor.commit();
+        }
+    }
 
     //InstagramKitLoginScope
     Map<String, String> authorizationParametersWithScope(String... scope) {
@@ -520,10 +585,10 @@ public class InstagramEngine {
     /**
      * Get information about a Media object.
      *
-     * @param mediaId  Id of a IGMedia object.
      * @param callback Provides a fully populated IGMedia object.
+     * @param mediaId  Id of a IGMedia object.
      */
-    public void getMedia(String mediaId, InstagramAPIResponseCallback<IGMedia> callback) {
+    public void getMedia(InstagramAPIResponseCallback<IGMedia> callback, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.getMedia(mediaId, getSession().getAccessToken());
 
@@ -580,6 +645,7 @@ public class InstagramEngine {
      * Can return mix of image and video types.
      *
      * @param location Geographic Location coordinates.
+     * @param distance Distance in metres to from location - max 5000 (5km), default is 1000 (1km) in other methods
      * @param callback Provides an array of IGMedia objects and IGPageInfo object.
      */
     public void getMediaAtLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, Float distance, IGLocation location) {
@@ -611,10 +677,10 @@ public class InstagramEngine {
     /**
      * Get a list of recent comments on a media object.
      *
-     * @param mediaId  Id of the Media object.
      * @param callback Provides an array of IGComment objects.
+     * @param mediaId  Id of the Media object.
      */
-    public void getCommentsOnMedia(String mediaId, InstagramAPIResponseCallback<ArrayList<IGComment>> callback) {
+    public void getCommentsOnMedia(InstagramAPIResponseCallback<ArrayList<IGComment>> callback, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.getCommentsOnMedia(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGComment>>() {
@@ -637,7 +703,7 @@ public class InstagramEngine {
      * @param mediaId     Id of the Media object.
      * @param callback    Invoked on successfully creating comment.
      */
-    public void postCommentOnMedia(String commentText, String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
+    public void postCommentOnMedia(InstagramAPIResponseCallback<IGPostResponse> callback, String commentText, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.postCommentOnMedia(commentText, mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
@@ -658,7 +724,7 @@ public class InstagramEngine {
      * @param callback  Invoked on successfully deleting comment.
      */
     //TODO: Handle exception for REQUIREMENTS
-    public void removeComment(String commentId, String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
+    public void removeComment(InstagramAPIResponseCallback<IGPostResponse> callback, String commentId, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.removeComment(commentId, mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
@@ -670,10 +736,10 @@ public class InstagramEngine {
     /**
      * Get a list of users who have liked this media.
      *
-     * @param mediaId  Id of the Media object.
      * @param callback Provides an array of IGLike(subset of user)  objects.
+     * @param mediaId  Id of the Media object.
      */
-    public void getLikesOnMedia(String mediaId, InstagramAPIResponseCallback<ArrayList<IGLike>> callback) {
+    public void getLikesOnMedia(InstagramAPIResponseCallback<ArrayList<IGLike>> callback, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.getLikesOnMedia(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLike>>() {
@@ -687,10 +753,10 @@ public class InstagramEngine {
      * To request access to this endpoint, please complete this form -
      * https://help.instagram.com/contact/185819881608116
      *
-     * @param mediaId  Id of the Media object.
      * @param callback Invoked on successfully liking a Media.
+     * @param mediaId  Id of the Media object.
      */
-    public void likeMedia(String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
+    public void likeMedia(InstagramAPIResponseCallback<IGPostResponse> callback, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.postMediaLike(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
@@ -704,10 +770,10 @@ public class InstagramEngine {
      * To request access to this endpoint, please complete this form -
      * https://help.instagram.com/contact/185819881608116
      *
-     * @param mediaId  Id of the Media object.
      * @param callback Invoked on successfully un-liking a Media.
+     * @param mediaId  Id of the Media object.
      */
-    public void unlikeMedia(String mediaId, InstagramAPIResponseCallback<IGPostResponse> callback) {
+    public void unlikeMedia(InstagramAPIResponseCallback<IGPostResponse> callback, String mediaId) {
 
         Call<IGAPIResponse> call = instagramAPIService.deleteMediaLikes(mediaId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
@@ -720,10 +786,10 @@ public class InstagramEngine {
     /**
      * Get information about a tag object.
      *
-     * @param name     Name of a Tag object.
      * @param callback Provides a IGTag object.
+     * @param name     Name of a Tag object.
      */
-    public void getTagDetails(String name, InstagramAPIResponseCallback<IGTag> callback) {
+    public void getTagDetails(InstagramAPIResponseCallback<IGTag> callback, String name) {
 
         Call<IGAPIResponse> call = instagramAPIService.getTagDetails(name, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGTag>() {
@@ -791,11 +857,11 @@ public class InstagramEngine {
     /**
      * Search for a location by geographic coordinate.
      *
-     * @param location Geographic Location coordinates.
      * @param callback Provides an array of IGLocation objects.
+     * @param location Geographic Location coordinates.
      */
     //synced
-    public void searchLocationsAtLocation(IGLocation location, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
+    public void searchLocationsAtLocation(InstagramAPIResponseCallback<ArrayList<IGLocation>> callback, IGLocation location) {
 
         Call<IGAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
@@ -805,12 +871,12 @@ public class InstagramEngine {
     /**
      * Search for a location by geographic coordinate.
      *
+     * @param callback         Provides an array of IGLocation objects.
      * @param location         Geographic Location coordinates.
      * @param distanceInMeters Default is 1000, max distance is 5000.
-     * @param callback         Provides an array of IGLocation objects.
      */
     //synced
-    public void searchLocationsAtLocation(IGLocation location, int distanceInMeters, InstagramAPIResponseCallback<ArrayList<IGLocation>> callback) {
+    public void searchLocationsAtLocation(InstagramAPIResponseCallback<ArrayList<IGLocation>> callback, IGLocation location, int distanceInMeters) {
 
         Call<IGAPIResponse> call = instagramAPIService.searchLocation(location.getLatitude(), location.getLongitude(), distanceInMeters, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGLocation>>() {
@@ -820,11 +886,11 @@ public class InstagramEngine {
     /**
      * Get information about a Location.
      *
-     * @param locationId Id of a IGLocation object.
      * @param callback   Provides a IGLocation object.
+     * @param locationId Id of a IGLocation object.
      */
     //synced getLocationWithId
-    public void getLocation(String locationId, InstagramAPIResponseCallback<IGLocation> callback) {
+    public void getLocation(InstagramAPIResponseCallback<IGLocation> callback, String locationId) {
 
         Call<IGAPIResponse> call = instagramAPIService.getLocation(locationId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGLocation>() {
@@ -835,11 +901,11 @@ public class InstagramEngine {
     /**
      * Get a list of recent IGMedia objects from a given location.
      *
+     * @param callback   Provides an array of IGMedia objects and IGPageInfo info
      * @param locationId Id of location you want the recent media from.
-     * @param callback Provides an array of IGMedia objects and IGPageInfo info
      */
 
-    public void getRecentMediaFromLocation(String locationId, InstagramAPIResponseCallback<ArrayList<IGMedia>> callback) {
+    public void getRecentMediaFromLocation(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String locationId) {
 
         Call<IGAPIResponse> call = instagramAPIService.getRecentMediaFromLocation(locationId, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<ArrayList<IGMedia>>() {
@@ -853,30 +919,6 @@ public class InstagramEngine {
     //=======================================================================================================================
 
 
-    public String getAppRedirectURL() {
-        return appRedirectURL;
-    }
-
-    private void setAppRedirectURL(String appRedirectURL) {
-        this.appRedirectURL = appRedirectURL;
-    }
-
-    public String getAppClientID() {
-        return appClientID;
-    }
-
-    private void setAppClientID(String appClientID) {
-        this.appClientID = appClientID;
-    }
-
-    public IGSession getSession() {
-        return session;
-    }
-
-    public InstagramLoginCallbackListener getInstagramLoginButtonCallback() {
-        return instagramLoginButtonCallback;
-    }
-
     /**
      * This method is used internal for handling login responses.
      *
@@ -885,5 +927,13 @@ public class InstagramEngine {
     public void setInstagramLoginButtonCallback(InstagramLoginCallbackListener instagramLoginButtonCallback) {
         this.instagramLoginButtonCallback = instagramLoginButtonCallback;
     }
+
+    /**
+     * This method is used internal for handling login responses.
+     */
+    public InstagramLoginCallbackListener getInstagramLoginButtonCallback() {
+        return instagramLoginButtonCallback;
+    }
+
 
 }

@@ -11,7 +11,7 @@ import com.instagram.instagramapi.R;
 import com.instagram.instagramapi.engine.InstagramEngine;
 import com.instagram.instagramapi.interfaces.InstagramAuthCallbackListener;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
-import com.instagram.instagramapi.objects.InstagramException;
+import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.objects.IGSession;
 import com.instagram.instagramapi.engine.InstagramKitConstants;
 import com.instagram.instagramapi.utils.Utils;
@@ -31,6 +31,7 @@ public class InstagramAuthActivity extends Activity {
 
     String authURL;
     String redirectURL;
+    String[] scopes;
 
 
     @Override
@@ -68,7 +69,7 @@ public class InstagramAuthActivity extends Activity {
                 case 1:
 
                     if (extras.containsKey("scopes")) {
-                        String[] scopes = extras.getStringArray("scopes");
+                        scopes = extras.getStringArray("scopes");
                         authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURLForScope(scopes);
                     }
 

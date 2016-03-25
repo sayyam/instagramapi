@@ -21,6 +21,8 @@ public class InstagramLoginButton extends Button {
     InstagramLoginCallbackListener instagramLoginButtonCallback;
     OnClickListener onClickListener;
 
+    String[] scopes;
+
     public InstagramLoginButton(Context context) {
         super(context);
         this.context = context;
@@ -36,6 +38,14 @@ public class InstagramLoginButton extends Button {
         super(context, attrs, defStyleAttr);
         this.context = context;
         setupLoginButton();
+    }
+
+    public String[] getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String[] scopes) {
+        this.scopes = scopes;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -72,6 +82,7 @@ public class InstagramLoginButton extends Button {
 
             Intent intent = new Intent(context, InstagramAuthActivity.class);
             intent.putExtra("type", 0);
+            intent.putExtra("scopes", scopes);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
 

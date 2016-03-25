@@ -1,7 +1,7 @@
 package com.instagram.instagramapi.interfaces;
 
 import com.instagram.instagramapi.objects.IGPagInfo;
-import com.instagram.instagramapi.objects.InstagramException;
+import com.instagram.instagramapi.exceptions.InstagramException;
 
 /**
  * Created by Sayyam on 3/18/16.
