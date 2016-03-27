@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -62,8 +64,9 @@ public interface InstagramAPIService {
     @GET("users/{user_id}/relationship")
     Call<IGAPIResponse> getRelationshipStatusOfUser(@Path("user_id") String userId, @Query("access_token") String accessToken);
 
+    @FormUrlEncoded
     @POST("users/{user_id}/relationship")
-    Call<IGAPIResponse> updateRelationship(@Path("user_id") String userId, @Query("action") String action, @Query("access_token") String accessToken);
+    Call<IGAPIResponse> updateRelationship(@Path("user_id") String userId, @Field("action") String action, @Query("access_token") String accessToken);
 
 
     //----MEDIA----
@@ -90,7 +93,7 @@ public interface InstagramAPIService {
     Call<IGAPIResponse> getCommentsOnMedia(@Path("media_id") String mediaId, @Query("access_token") String accessToken);
 
     @POST("media/{media_id}/comments")
-    Call<IGAPIResponse> postCommentOnMedia(@Path("text") String commentText, @Query("media_id") String mediaId, @Query("access_token") String accessToken);
+    Call<IGAPIResponse> postCommentOnMedia(@Path("text") String commentText, @Path("media_id") String mediaId, @Query("access_token") String accessToken);
 
     @DELETE("media/{media_id}/comments/{comment_id}")
     Call<IGAPIResponse> removeComment(@Path("comment_id") String commentId, @Path("media_id") String mediaId, @Query("access_token") String accessToken);

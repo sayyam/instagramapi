@@ -132,64 +132,78 @@ public class SampleActivity extends AppCompatActivity {
 
         switch (v.getId()) {
             case R.id.userDetail:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback, "3043977032");
                 break;
             case R.id.selfUserDetail:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback);
                 break;
             case R.id.mediaForSelfUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(instagramMediaResponseCallback);
                 break;
             case R.id.mediaForUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(instagramMediaResponseCallback, "3043977032");
                 break;
             case R.id.userLikedMedia:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getUserLikedMedia(instagramMediaResponseCallback);
                 break;
             case R.id.searchUser:
-                InstagramEngine.getInstance(SampleActivity.this).searchUser(instagramUsersListResponseCallback, "sayyam");
+                InstagramEngine.getInstance(SampleActivity.this).searchUser(instagramUsersListResponseCallback, "sayyamsynnapps");
                 break;
             case R.id.usersIFollow:
                 InstagramEngine.getInstance(SampleActivity.this).getUsersIFollow(instagramUsersListResponseCallback);
                 break;
             case R.id.getMediaForUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getMediaForUser(mediaListApiResponseCallback, 5, null);
                 break;
             case R.id.getUserLikedMedia:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getUserLikedMedia(likedMediaApiResponseCallback);
                 break;
             case R.id.getRelationshipStatusOfUser:
-                InstagramEngine.getInstance(SampleActivity.this).getRelationshipStatusOfUser(usersRelationshipApiResponseCallback, "");
+                InstagramEngine.getInstance(SampleActivity.this).getRelationshipStatusOfUser(usersRelationshipApiResponseCallback, "3043977032");
                 break;
             case R.id.getUsersFollowedByUser:
                 InstagramEngine.getInstance(SampleActivity.this).getUsersFollowedByUser(usersFollowedByApiResponseCallback, "3043977032");
                 break;
             case R.id.getFollowedBy:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getFollowedBy(usersFollowedByApiResponseCallback);
                 break;
             case R.id.getFollowersOfUser:
                 InstagramEngine.getInstance(SampleActivity.this).getFollowersOfUser(followersApiResponseCallback, "3043977032");
                 break;
             case R.id.getFollowRequests:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getFollowRequests(followRequestsApiResponseCallback);
                 break;
             case R.id.followUser:
-                InstagramEngine.getInstance(SampleActivity.this).followUser(followUserApiResponseCallback, "");
+                InstagramEngine.getInstance(SampleActivity.this).followUser(followUserApiResponseCallback, "3043977032");
                 break;
-            case R.id.unFollowUser://test this api exception
-                InstagramEngine.getInstance(SampleActivity.this).unFollowUser(unFollowUserApiResponseCallback, "userId");
+            case R.id.unFollowUser:
+                //tested
+                InstagramEngine.getInstance(SampleActivity.this).unFollowUser(unFollowUserApiResponseCallback, "3043977032");
                 break;
             case R.id.blockUser:
-                InstagramEngine.getInstance(SampleActivity.this).blockUser(blockUserApiResponseCallback, "userId");
+                //tested
+                InstagramEngine.getInstance(SampleActivity.this).blockUser(blockUserApiResponseCallback, "3043977032");
                 break;
             case R.id.unblockUser:
-                InstagramEngine.getInstance(SampleActivity.this).unblockUser(unBlockUserApiResponseCallback, "userId");
+                //tested
+                InstagramEngine.getInstance(SampleActivity.this).unblockUser(unBlockUserApiResponseCallback, "3043977032");
                 break;
             case R.id.approveUser:
-                InstagramEngine.getInstance(SampleActivity.this).approveUser(approveUserApiResponseCallback, "userId");
+                //tested
+                InstagramEngine.getInstance(SampleActivity.this).approveUser(approveUserApiResponseCallback, "3043977032");
                 break;
             case R.id.ignoreUser:
-                InstagramEngine.getInstance(SampleActivity.this).ignoreUser(ignoreUserApiResponseCallback, "userId");
+                //tested
+                InstagramEngine.getInstance(SampleActivity.this).ignoreUser(ignoreUserApiResponseCallback, "3043977032");
                 break;
             case R.id.getMedia:
                 InstagramEngine.getInstance(SampleActivity.this).getMedia(mediaApiResponseCallback, "mediaId");
@@ -225,10 +239,10 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getTagDetails(tagDetailsApiResponseCallback, "name");
                 break;
             case R.id.getMediaWithTagName:
-                InstagramEngine.getInstance(SampleActivity.this).getMediaWithTagName(mediaWithTagApiResponseCallback, "tagName");
+                InstagramEngine.getInstance(SampleActivity.this).getMediaWithTagName(mediaWithTagApiResponseCallback, "flower");
                 break;
             case R.id.searchTagsWithName:
-                InstagramEngine.getInstance(SampleActivity.this).searchTagsWithName(searchTagsWithNameApiResponseCallback, "tagName");
+                InstagramEngine.getInstance(SampleActivity.this).searchTagsWithName(searchTagsWithNameApiResponseCallback, "flower");
                 break;
             case R.id.searchLocationsAtLocation:
                 InstagramEngine.getInstance(SampleActivity.this).searchLocationsAtLocation(searchLocationsAtApiResponseCallback, location);
@@ -498,7 +512,7 @@ public class SampleActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(InstagramException exception) {
-            Log.v("SampleActivity", "Exception:" + exception.getMessage());
+            Log.v("SampleActivity", "Exception:" + exception.getErrorReason());
         }
     };
 
@@ -753,7 +767,7 @@ public class SampleActivity extends AppCompatActivity {
     InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
         @Override
         public void onResponse(IGUser responseObject, IGPagInfo pageInfo) {
-            Log.v("SampleActivity", "User:" + responseObject.getUsername());
+            Log.v("SampleActivity", "User:" + responseObject.getUsername()+", User Id: " + responseObject.getId());
 
             Toast.makeText(SampleActivity.this, "Username: " + responseObject.getUsername(),
                     Toast.LENGTH_LONG).show();

@@ -137,7 +137,7 @@ public class InstagramAuthActivity extends Activity {
 
                         Log.v("IntagramAuthActivity", "Oh Crap...." + " Error:" + error + " Description: " + errorDescription);
 
-                        InstagramException instagramException = new InstagramException(errorDescription, error, errorReason);
+                        InstagramException instagramException = new InstagramException(error, errorReason);
 
                         InstagramEngine.getInstance(InstagramAuthActivity.this).getInstagramLoginButtonCallback().onError(instagramException);
 
@@ -187,7 +187,7 @@ public class InstagramAuthActivity extends Activity {
 
             Bundle responseSession = new Bundle();
             responseSession.putString("message", error.getMessage());
-            responseSession.putString("error", error.getError());
+            responseSession.putString("error", error.getErrorType());
             responseSession.putString("error_reason", error.getErrorReason());
 
             Intent intent = new Intent();

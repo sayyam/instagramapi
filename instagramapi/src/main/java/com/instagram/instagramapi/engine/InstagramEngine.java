@@ -414,12 +414,13 @@ public class InstagramEngine {
     }
 
     /**
-     * Modify the relationship between the current user and the target user. You need to include an action parameter to specify the relationship action you want to perform. Valid actions are: 'follow', 'unfollow' 'approve' or 'ignore'. Relationships are expressed using the following terms in the response:
+     * Modify the relationship between the current user and the target user. You need to include an action parameter to specify the relationship action you want to perform. Valid actions are: 'follow', 'unfollow' 'approve' or 'ignore'.
+     * Relationships are expressed using the following terms in the response:
      * -outgoing_status: Your relationship to the user. Can be 'follows', 'requested', 'none'.
      * -incoming_status: A user's relationship to you. Can be 'followed_by', 'requested_by', 'blocked_by_you', 'none'.
      *
      * @param callback Arraylist<InstagramUser>
-     * @param action   Action to perform on a relationship follow,unfollow, block,unblock,approve,ignore
+     * @param action   Action to perform on a relationship follow, unfollow, block, unblock, approve, ignore
      * @param userId   Id of the User object to perform action on.
      */
     private void updateRelationShip(InstagramAPIResponseCallback<IGRelationship> callback, String action, String userId) {

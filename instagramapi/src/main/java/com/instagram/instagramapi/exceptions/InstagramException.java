@@ -5,28 +5,28 @@ package com.instagram.instagramapi.exceptions;
  */
 public class InstagramException extends Exception {
 
-    String error;
+    String errorType;
     String errorReason;
 
     public InstagramException() {
     }
 
-    public InstagramException(String detailMessage) {
-        super(detailMessage);
+    public InstagramException(String errorReason) {
+        super(errorReason);
     }
 
-    public InstagramException(String detailMessage, String error, String errorReason) {
-        super(detailMessage);
-        this.error = error;
+    public InstagramException(String errorType,String errorReason) {
+        super(errorReason);
+        this.errorType = errorType;
         this.errorReason = errorReason;
     }
 
-    public String getError() {
-        return error;
+    public String getErrorType() {
+        return errorType;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setErrorType(String errorType) {
+        this.errorType = errorType;
     }
 
     public String getErrorReason() {
