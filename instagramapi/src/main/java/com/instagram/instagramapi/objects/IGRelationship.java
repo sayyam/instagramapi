@@ -14,7 +14,7 @@ public class IGRelationship {
 
     @SerializedName("incoming_status")
     @Expose
-    String incomoingStatus;
+    String incomingStatus;
 
     public String getOutgoingStatus() {
         return outgoingStatus;
@@ -24,11 +24,11 @@ public class IGRelationship {
         this.outgoingStatus = outgoingStatus;
     }
 
-    public String getIncomoingStatus() {
-        return incomoingStatus;
+    public String getIncomingStatus() {
+        return incomingStatus;
     }
 
-    public void setIncomoingStatus(String incomoingStatus) {
-        this.incomoingStatus = incomoingStatus;
+    public void setIncomingStatus(String incomingStatus) {
+        this.incomingStatus = incomingStatus;
     }
 }

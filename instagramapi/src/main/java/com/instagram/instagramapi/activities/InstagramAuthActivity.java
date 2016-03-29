@@ -1,19 +1,23 @@
 package com.instagram.instagramapi.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
 import com.instagram.instagramapi.R;
 import com.instagram.instagramapi.engine.InstagramEngine;
+import com.instagram.instagramapi.engine.InstagramKitConstants;
+import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.interfaces.InstagramAuthCallbackListener;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
-import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.objects.IGSession;
-import com.instagram.instagramapi.engine.InstagramKitConstants;
 import com.instagram.instagramapi.utils.Utils;
 import com.instagram.instagramapi.widgets.InstagramWebViewClient;
 
@@ -26,7 +30,6 @@ import java.util.Map;
 public class InstagramAuthActivity extends Activity {
 
     WebView instagrramAuthWebView;
-
     InstagramWebViewClient webViewClient;
 
     String authURL;
@@ -77,6 +80,14 @@ public class InstagramAuthActivity extends Activity {
                     instagrramAuthWebView.setWebViewClient(webViewClient);
                     instagrramAuthWebView.loadUrl(authURL);
 
+                    break;
+                case 2:
+
+                    instagrramAuthWebView.clearCache(true);
+                    instagrramAuthWebView.clearHistory();
+                    ClearCookies(getApplicationContext());
+
+                    finish();
                     break;
                 default:
 
@@ -199,6 +210,27 @@ public class InstagramAuthActivity extends Activity {
 
         }
     };
+
+    @SuppressWarnings("deprecation")
+    private static void ClearCookies(Context context)
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            Log.d("IGAuthActivity", "Using ClearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else
+        {
+            Log.d("IGAuthActivity", "Using ClearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager=CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
+    }
 
 
 }

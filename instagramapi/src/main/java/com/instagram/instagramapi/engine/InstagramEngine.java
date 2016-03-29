@@ -1,6 +1,7 @@
 package com.instagram.instagramapi.engine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.instagram.instagramapi.activities.InstagramAuthActivity;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.interfaces.InstagramAPIService;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
@@ -161,6 +163,13 @@ public class InstagramEngine {
     }
 
     public void logout() {
+        Intent intent = new Intent(mContext, InstagramAuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        intent.putExtra("type", 2);
+        mContext.startActivity(intent);
+
         setSession(null);
     }
 
@@ -801,7 +810,7 @@ public class InstagramEngine {
      * Get a list of recently tagged media.
      *
      * @param name     A valid tag name without a leading #. (eg. snowy, nofilter)
-     * @param callback Provides an array of IGMedia objects and IGPageInfo info.
+     * @param callback Provides an array of IGMedia objects this user has added and IGPageInfo info.
      */
     public void getMediaWithTagName(InstagramAPIResponseCallback<ArrayList<IGMedia>> callback, String name) {
 

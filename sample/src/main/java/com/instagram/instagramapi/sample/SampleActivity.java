@@ -166,9 +166,11 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getUserLikedMedia(likedMediaApiResponseCallback);
                 break;
             case R.id.getRelationshipStatusOfUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getRelationshipStatusOfUser(usersRelationshipApiResponseCallback, "3043977032");
                 break;
             case R.id.getUsersFollowedByUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getUsersFollowedByUser(usersFollowedByApiResponseCallback, "3043977032");
                 break;
             case R.id.getFollowedBy:
@@ -176,6 +178,7 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getFollowedBy(usersFollowedByApiResponseCallback);
                 break;
             case R.id.getFollowersOfUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getFollowersOfUser(followersApiResponseCallback, "3043977032");
                 break;
             case R.id.getFollowRequests:
@@ -183,6 +186,7 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getFollowRequests(followRequestsApiResponseCallback);
                 break;
             case R.id.followUser:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).followUser(followUserApiResponseCallback, "3043977032");
                 break;
             case R.id.unFollowUser:
@@ -227,21 +231,23 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).removeComment(deleteCommentApiResponseCallback, "commentId", "mediaId");
                 break;
             case R.id.getLikesOnMedia:
-                InstagramEngine.getInstance(SampleActivity.this).getLikesOnMedia(mediaLikesApiResponseCallback, "mediaId");
+                InstagramEngine.getInstance(SampleActivity.this).getLikesOnMedia(mediaLikesApiResponseCallback, "1208938763290395995_3043977032");
                 break;
             case R.id.likeMedia:
-                InstagramEngine.getInstance(SampleActivity.this).likeMedia(likeApiResponseCallback, "mediaId");
+                InstagramEngine.getInstance(SampleActivity.this).likeMedia(likeApiResponseCallback, "1208938763290395995_3043977032");
                 break;
             case R.id.unlikeMedia:
-                InstagramEngine.getInstance(SampleActivity.this).unlikeMedia(unLikeApiResponseCallback, "mediaId");
+                InstagramEngine.getInstance(SampleActivity.this).unlikeMedia(unLikeApiResponseCallback, "1208938763290395995_3043977032");
                 break;
             case R.id.getTagDetails:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).getTagDetails(tagDetailsApiResponseCallback, "name");
                 break;
             case R.id.getMediaWithTagName:
-                InstagramEngine.getInstance(SampleActivity.this).getMediaWithTagName(mediaWithTagApiResponseCallback, "flower");
+                InstagramEngine.getInstance(SampleActivity.this).getMediaWithTagName(mediaWithTagApiResponseCallback, "snow");
                 break;
             case R.id.searchTagsWithName:
+                //tested
                 InstagramEngine.getInstance(SampleActivity.this).searchTagsWithName(searchTagsWithNameApiResponseCallback, "flower");
                 break;
             case R.id.searchLocationsAtLocation:
@@ -489,9 +495,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -504,9 +510,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -520,9 +526,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -535,9 +541,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -550,9 +556,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getOutgoingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getOutgoingStatus());
 
         }
 
@@ -566,9 +572,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -651,9 +657,9 @@ public class SampleActivity extends AppCompatActivity {
         @Override
         public void onResponse(IGRelationship relationship, IGPagInfo pageInfo) {
 
-            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Status: " + relationship.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
-            Log.v("SampleActivity", "Status: " + relationship.getIncomoingStatus());
+            Log.v("SampleActivity", "Status: " + relationship.getIncomingStatus());
 
         }
 
@@ -813,10 +819,10 @@ public class SampleActivity extends AppCompatActivity {
     InstagramAPIResponseCallback<IGRelationship> instagramRelationshipResponseCallback = new InstagramAPIResponseCallback<IGRelationship>() {
         @Override
         public void onResponse(IGRelationship responseObject, IGPagInfo pageInfo) {
-            Log.v("SampleActivity", "getIncomoingStatus:" + responseObject.getIncomoingStatus());
+            Log.v("SampleActivity", "getIncomingStatus:" + responseObject.getIncomingStatus());
             Log.v("SampleActivity", "getOutgoingStatus:" + responseObject.getOutgoingStatus());
 
-            Toast.makeText(SampleActivity.this, "Username: " + responseObject.getIncomoingStatus(),
+            Toast.makeText(SampleActivity.this, "Username: " + responseObject.getIncomingStatus(),
                     Toast.LENGTH_LONG).show();
 
 
