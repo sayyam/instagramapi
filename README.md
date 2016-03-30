@@ -78,7 +78,6 @@ You can start the ```InstagramEngine``` in two different ways:
 
                         Toast.makeText(SampleActivity.this, "Woohooo!!! User trusts you :) " + session.getAccessToken(),
                                 Toast.LENGTH_LONG).show();
-
                     }
                 }
                 break;
@@ -164,16 +163,16 @@ InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserRes
 InstagramEngine.getInstance(SampleActivity.this).logout();
 ```
 ####Exception Handling:
-In case of exceptions like insufficient scope or invalid parameters you will get InstagramException in onFailure og your callback.
+In case of exceptions like insufficient scope or invalid parameters you will get InstagramException in onFailure() of your callback.
 ```java
-           InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
-       ...
-        @Override
-        public void onFailure(InstagramException exception) {
-            Log.v("Exception", "Exception:" + exception.getMessage());
-        }
+InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
+  ...
+  @Override
+  public void onFailure(InstagramException exception) {
+      Log.v("Exception", "Exception:" + exception.getMessage());
+      }
         
-        }
+  }
 ```
 
 
