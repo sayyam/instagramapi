@@ -3,6 +3,8 @@ Instagram API
 ============
 A wrapper on instagram API for android.
 
+[ ![Download](https://api.bintray.com/packages/sayyam/maven/instagramapi/images/download.svg) ](https://bintray.com/sayyam/maven/instagramapi/_latestVersion)
+
 Download
 --------
 ####Gradle:
