@@ -38,8 +38,8 @@ You can get above credentials from [Instagram Developrs Portal](https://www.inst
 
 ####Initiate the authorization process:
 You can start the ```InstagramEngine``` in two different ways:
-1-Intent
-2-InstagramLoginButton
+1. Intent
+2. InstagramLoginButton
 
 ####1- Initiate the authorization process via ```Intent```.
 
