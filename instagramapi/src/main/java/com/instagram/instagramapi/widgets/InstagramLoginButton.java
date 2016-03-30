@@ -81,8 +81,10 @@ public class InstagramLoginButton extends Button {
             InstagramEngine.getInstance(context).setInstagramLoginButtonCallback(InstagramLoginButton.this.instagramLoginButtonCallback);
 
             Intent intent = new Intent(context, InstagramAuthActivity.class);
-            intent.putExtra("type", 0);
-            intent.putExtra("scopes", scopes);
+            intent.putExtra(InstagramEngine.TYPE, InstagramEngine.TYPE_LOGIN);
+            intent.putExtra(InstagramEngine.SCOPE, scopes);
+//            intent.putExtra("type", 0);
+//            intent.putExtra("scopes", scopes);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
 

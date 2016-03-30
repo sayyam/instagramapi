@@ -58,11 +58,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class InstagramEngine {
 
+    public static String TYPE = "type";
+    public static String SCOPE = "scope";
+    public static String TYPE_LOGOUT = "type_logout";
+    public static String TYPE_LOGIN = "type_in";
+
     private String appClientID;
     private String appRedirectURL;
     private IGSession session;
-    //@property (nonatomic, strong, nonnull) AFHTTPSessionManager *httpManager;
-
 
     private static InstagramEngine instance = null;
     private Retrofit retrofit;

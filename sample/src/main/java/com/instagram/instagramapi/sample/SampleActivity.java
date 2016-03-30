@@ -93,8 +93,9 @@ public class SampleActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            intent.putExtra("type", 1);
-            intent.putExtra("scopes", scopes);
+            intent.putExtra(InstagramEngine.TYPE, InstagramEngine.TYPE_LOGIN);
+            intent.putExtra(InstagramEngine.SCOPE, scopes);
+
             startActivityForResult(intent, 0);
         }
     };

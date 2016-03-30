@@ -50,6 +50,7 @@ public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
                 if (null != data && !data.isEmpty()) {
 
                     T responseData = new Gson().fromJson(data, getMyType());
+                    //T responseData = new Gson().fromJson(data, new TypeToken<T>(){}.getType());
 
                     instagramAPIResponseCallback.onResponse(responseData, pagination);
                 } else {

@@ -58,22 +58,20 @@ public class InstagramAuthActivity extends Activity {
 
         Bundle extras = intent.getExtras();
 
-        if (null != extras && extras.containsKey("type")) {
-            final int type = extras.getInt("type");
+        if (null != extras && extras.containsKey(InstagramEngine.TYPE)) {
+            final int type = extras.getInt(InstagramEngine.TYPE);
 
 
             switch (type) {
-                case 0:
-                    authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURL();
-                    instagrramAuthWebView.setWebViewClient(webViewClient);
-                    instagrramAuthWebView.loadUrl(authURL);
 
-                    break;
+                default:
                 case 1:
 
-                    if (extras.containsKey("scopes")) {
-                        scopes = extras.getStringArray("scopes");
+                    if (extras.containsKey(InstagramEngine.SCOPE)) {
+                        scopes = extras.getStringArray(InstagramEngine.SCOPE);
                         authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURLForScope(scopes);
+                    }else{
+                        authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURL();
                     }
 
                     InstagramEngine.getInstance(InstagramAuthActivity.this).setInstagramLoginButtonCallback(instagramLoginCallbackListener);
@@ -89,9 +87,6 @@ public class InstagramAuthActivity extends Activity {
 
                     finish();
                     break;
-                default:
-
-                    throw new RuntimeException("You must provide type key with valid int value in intent");
 
             }
         } else {
@@ -212,19 +207,17 @@ public class InstagramAuthActivity extends Activity {
     };
 
     @SuppressWarnings("deprecation")
-    private static void ClearCookies(Context context)
-    {
+    private static void ClearCookies(Context context) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Log.d("IGAuthActivity", "Using ClearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
-        } else
-        {
+        } else {
             Log.d("IGAuthActivity", "Using ClearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+            CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
             cookieSyncMngr.startSync();
-            CookieManager cookieManager=CookieManager.getInstance();
+            CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeAllCookie();
             cookieManager.removeSessionCookie();
             cookieSyncMngr.stopSync();
