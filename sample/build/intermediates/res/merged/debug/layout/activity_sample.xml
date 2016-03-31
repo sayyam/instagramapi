@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".SampleActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.instagram.instagramapi.widgets.InstagramLoginButton
+            android:id="@+id/instagramLoginButton"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:text="Login Button" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:text="Login" />
+
+        <Button
+            android:id="@+id/userDetail"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="User Detail" />
+
+        <Button
+            android:id="@+id/selfUserDetail"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="Self User Detail" />
+
+        <Button
+            android:id="@+id/mediaForSelfUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="mediaForSelfUser" />
+
+        <Button
+            android:id="@+id/mediaForUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="mediaForUser" />
+
+        <Button
+            android:id="@+id/userLikedMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="User Liked Media" />
+
+        <Button
+            android:id="@+id/searchUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="Search User" />
+
+        <Button
+            android:id="@+id/usersIFollow"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="Users I Follow" />
+
+        <Button
+            android:id="@+id/getMediaForUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMediaForUser" />
+
+        <Button
+            android:id="@+id/getUserLikedMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getUserLikedMedia" />
+
+        <Button
+            android:id="@+id/getRelationshipStatusOfUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getRelationshipStatusOfUser" />
+
+        <Button
+            android:id="@+id/getUsersFollowedByUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getUsersFollowedByUser" />
+
+        <Button
+            android:id="@+id/getFollowedBy"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getFollowedBy" />
+
+        <Button
+            android:id="@+id/getFollowersOfUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getFollowersOfUser" />
+
+        <Button
+            android:id="@+id/getFollowRequests"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getFollowRequests" />
+
+        <Button
+            android:id="@+id/followUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="followUser" />
+
+        <Button
+            android:id="@+id/unFollowUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="unFollowUser" />
+
+        <Button
+            android:id="@+id/blockUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="blockUser" />
+
+        <Button
+            android:id="@+id/unblockUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="unblockUser" />
+
+        <Button
+            android:id="@+id/approveUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="approveUser" />
+
+        <Button
+            android:id="@+id/ignoreUser"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="ignoreUser" />
+
+        <Button
+            android:id="@+id/getMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMedia" />
+
+        <Button
+            android:id="@+id/getMediaByShortCode"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMediaByShortCode" />
+
+        <Button
+            android:id="@+id/getMediaAtLocation"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMediaAtLocation" />
+
+        <Button
+            android:id="@+id/getMediaAtLocationWithRadius"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMediaAtLocationWithRadius" />
+
+        <Button
+            android:id="@+id/getCommentsOnMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getCommentsOnMedia" />
+
+        <Button
+            android:id="@+id/postCommentOnMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="postCommentOnMedia" />
+
+        <Button
+            android:id="@+id/removeComment"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="removeComment" />
+
+        <Button
+            android:id="@+id/getLikesOnMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getLikesOnMedia" />
+
+        <Button
+            android:id="@+id/likeMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="likeMedia" />
+
+        <Button
+            android:id="@+id/unlikeMedia"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="unlikeMedia" />
+
+        <Button
+            android:id="@+id/getTagDetails"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getTagDetails" />
+
+        <Button
+            android:id="@+id/getMediaWithTagName"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getMediaWithTagName" />
+
+        <Button
+            android:id="@+id/searchTagsWithName"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="searchTagsWithName" />
+
+        <Button
+            android:id="@+id/searchLocationsAtLocation"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="searchLocationsAtLocation" />
+
+        <Button
+            android:id="@+id/getLocation"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getLocation" />
+
+        <Button
+            android:id="@+id/getRecentMediaFromLocation"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="getRecentMediaFromLocation" />
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="200dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:onClick="genericClickListener"
+            android:text="Logout" />
+
+    </LinearLayout>
+</ScrollView>
