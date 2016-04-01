@@ -43,9 +43,9 @@ You can start the ```InstagramEngine``` in two different ways:
 1. Intent
 2. InstagramLoginButton
 
-####1- Initiate the authorization process via ```Intent```.
+####1- Initiate the authorization process via ```Intent```:
 
-##### Create an intent:
+##### Create an intent
 ```java
 
   String[] scopes = {InstagramKitLoginScope.BASIC, InstagramKitLoginScope.COMMENTS};
@@ -60,7 +60,7 @@ You can start the ```InstagramEngine``` in two different ways:
   
   startActivityForResult(intent, 0);
 ```
-##### Handle Login Result:
+##### Handle Login Result
 
 ```java
   @Override
@@ -88,7 +88,7 @@ You can start the ```InstagramEngine``` in two different ways:
   }
 ```
 
-####Initiate the login process via ```InstagramLoginButton```:
+####2- Initiate the login process via ```InstagramLoginButton```:
 
 #####Add ```InstagramLoginButton``` in your layout
 ```xml
@@ -135,10 +135,9 @@ You can start the ```InstagramEngine``` in two different ways:
   };
 ```
 
-##### Fetch User details:
+#### Fetch User details:
 
-
-#####Get user details via ```getUserDetails()```:
+#####Get user details via ```getUserDetails()```
 ```java
 InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback);
 ```
@@ -176,7 +175,6 @@ InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new Instagr
         
   }
 ```
-
 
 
 License
