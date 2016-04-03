@@ -4,6 +4,7 @@ Instagram API
 A wrapper on instagram API for android.
 
 [ ![Download](https://api.bintray.com/packages/sayyam/maven/instagramapi/images/download.svg) ](https://bintray.com/sayyam/maven/instagramapi/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-instagramapi-green.svg?style=true)](https://android-arsenal.com/details/1/3381)
 
 Download
 --------
