@@ -10,14 +10,14 @@ Download
 --------
 ####Gradle:
 ```groovy
-compile 'com.github.sayyam:instagramapi:0.0.4'
+compile 'com.github.sayyam:instagramapi:0.0.6'
 ```
 ####Maven:
 ```xml
 <dependency>
   <groupId>com.github.sayyam</groupId>
   <artifactId>instagramapi</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.6</version>
   <type>pom</type>
 </dependency>
 ```
