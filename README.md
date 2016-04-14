@@ -4,19 +4,22 @@ Instagram API
 A wrapper on instagram API for android.
 
 [ ![Download](https://api.bintray.com/packages/sayyam/maven/instagramapi/images/download.svg) ](https://bintray.com/sayyam/maven/instagramapi/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-instagramapi-green.svg?style=true)](https://android-arsenal.com/details/1/3381)
 
 Download
 --------
 ####Gradle:
 ```groovy
-compile 'com.github.sayyam:instagramapi:0.0.4'
+maven { url 'https://dl.bintray.com/sayyam/maven' }
+
+compile 'com.github.sayyam:instagramapi:0.0.6'
 ```
 ####Maven:
 ```xml
 <dependency>
   <groupId>com.github.sayyam</groupId>
   <artifactId>instagramapi</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.6</version>
   <type>pom</type>
 </dependency>
 ```
@@ -43,9 +46,9 @@ You can start the ```InstagramEngine``` in two different ways:
 1. Intent
 2. InstagramLoginButton
 
-####1- Initiate the authorization process via ```Intent```.
+####1- Initiate the authorization process via ```Intent```:
 
-##### Create an intent:
+##### Create an intent
 ```java
 
   String[] scopes = {InstagramKitLoginScope.BASIC, InstagramKitLoginScope.COMMENTS};
@@ -60,7 +63,7 @@ You can start the ```InstagramEngine``` in two different ways:
   
   startActivityForResult(intent, 0);
 ```
-##### Handle Login Result:
+##### Handle Login Result
 
 ```java
   @Override
@@ -88,7 +91,7 @@ You can start the ```InstagramEngine``` in two different ways:
   }
 ```
 
-####Initiate the login process via ```InstagramLoginButton```:
+####2- Initiate the login process via ```InstagramLoginButton```:
 
 #####Add ```InstagramLoginButton``` in your layout
 ```xml
@@ -135,10 +138,9 @@ You can start the ```InstagramEngine``` in two different ways:
   };
 ```
 
-##### Fetch User details:
+#### Fetch User details:
 
-
-#####Get user details via ```getUserDetails()```:
+#####Get user details via ```getUserDetails()```
 ```java
 InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback);
 ```
@@ -176,7 +178,6 @@ InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new Instagr
         
   }
 ```
-
 
 
 License

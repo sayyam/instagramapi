@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class IGComment implements Serializable{
     @SerializedName("created_time")
     @Expose
-    private String createdTime;
+    private Long createdTime;
     @SerializedName("text")
     @Expose
     private String text;
@@ -25,14 +25,14 @@ public class IGComment implements Serializable{
     /**
      * @return The createdTime
      */
-    public String getCreatedTime() {
+    public Long getCreatedTime() {
         return createdTime;
     }
 
     /**
      * @param createdTime The created_time
      */
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
     }
 
