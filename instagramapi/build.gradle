@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/sayyam/instagramapi'
     gitUrl = 'https://github.com/sayyam/instagramapi.git'
 
-    libraryVersion = '0.0.4'
+    libraryVersion = '0.0.7'
 
     developerId = 'sayyam'
     developerName = 'Sayyam mehmood'
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 5
+        versionName "0.0.7"
     }
     buildTypes {
         release {

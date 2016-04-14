@@ -61,33 +61,40 @@ public class InstagramAuthActivity extends Activity {
         if (null != extras && extras.containsKey(InstagramEngine.TYPE)) {
             final int type = extras.getInt(InstagramEngine.TYPE);
 
-
             switch (type) {
 
+                //Login
                 default:
-                case 1:
+                case InstagramEngine.TYPE_LOGIN:
 
                     if (extras.containsKey(InstagramEngine.SCOPE)) {
                         scopes = extras.getStringArray(InstagramEngine.SCOPE);
                         authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURLForScope(scopes);
-                    }else{
+                    } else {
                         authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURL();
                     }
 
-                    InstagramEngine.getInstance(InstagramAuthActivity.this).setInstagramLoginButtonCallback(instagramLoginCallbackListener);
+                    if (!extras.containsKey(InstagramEngine.IS_LOGIN_BUTTON)) {
+                        InstagramEngine.getInstance(InstagramAuthActivity.this).setInstagramLoginButtonCallback(instagramLoginCallbackListener);
+                    }
+
                     instagrramAuthWebView.setWebViewClient(webViewClient);
                     instagrramAuthWebView.loadUrl(authURL);
 
                     break;
-                case 2:
+
+                //Logout
+                case InstagramEngine.TYPE_LOGOUT:
 
                     instagrramAuthWebView.clearCache(true);
                     instagrramAuthWebView.clearHistory();
                     ClearCookies(getApplicationContext());
 
+                    intent = new Intent();
+                    setResult(RESULT_OK, intent);
+
                     finish();
                     break;
-
             }
         } else {
 

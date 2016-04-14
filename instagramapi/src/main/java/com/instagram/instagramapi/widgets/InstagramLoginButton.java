@@ -82,6 +82,7 @@ public class InstagramLoginButton extends Button {
 
             Intent intent = new Intent(context, InstagramAuthActivity.class);
             intent.putExtra(InstagramEngine.TYPE, InstagramEngine.TYPE_LOGIN);
+            intent.putExtra(InstagramEngine.IS_LOGIN_BUTTON, true);
             intent.putExtra(InstagramEngine.SCOPE, scopes);
 //            intent.putExtra("type", 0);
 //            intent.putExtra("scopes", scopes);

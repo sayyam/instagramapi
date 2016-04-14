@@ -35,6 +35,7 @@ public class SampleActivity extends AppCompatActivity {
     Button loginButton;
 
     String[] scopes = {InstagramKitLoginScope.BASIC, InstagramKitLoginScope.COMMENTS, InstagramKitLoginScope.LIKES, InstagramKitLoginScope.RELATIONSHIP, InstagramKitLoginScope.PUBLIC_ACCESS, InstagramKitLoginScope.FOLLOWER_LIST};
+
     //String[] scopes = {InstagramKitLoginScope.BASIC};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class SampleActivity extends AppCompatActivity {
             intent.putExtra(InstagramEngine.TYPE, InstagramEngine.TYPE_LOGIN);
             intent.putExtra(InstagramEngine.SCOPE, scopes);
 
-            startActivityForResult(intent, 0);
+            startActivityForResult(intent, InstagramEngine.REQUEST_CODE_LOGIN);
         }
     };
 
@@ -105,7 +106,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case 0:
+            case InstagramEngine.REQUEST_CODE_LOGIN:
 
                 if (resultCode == RESULT_OK) {
 
@@ -121,6 +122,12 @@ public class SampleActivity extends AppCompatActivity {
                     }
                 }
                 break;
+            case InstagramEngine.REQUEST_CODE_LOGOUT:
+                if (resultCode == RESULT_OK) {
+
+                    Toast.makeText(SampleActivity.this, "Logged Out Successfully.",
+                            Toast.LENGTH_LONG).show();
+                }
             default:
                 break;
         }
@@ -261,7 +268,7 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getRecentMediaFromLocation(mediaAtLocationApiResponseCallback, "locationId");
                 break;
             case R.id.logout:
-                InstagramEngine.getInstance(SampleActivity.this).logout();
+                InstagramEngine.getInstance(SampleActivity.this).logout(SampleActivity.this, InstagramEngine.REQUEST_CODE_LOGOUT);
         }
 
     }
@@ -774,7 +781,7 @@ public class SampleActivity extends AppCompatActivity {
     InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
         @Override
         public void onResponse(IGUser responseObject, IGPagInfo pageInfo) {
-            Log.v("SampleActivity", "User:" + responseObject.getUsername()+", User Id: " + responseObject.getId());
+            Log.v("SampleActivity", "User:" + responseObject.getUsername() + ", User Id: " + responseObject.getId());
 
             Toast.makeText(SampleActivity.this, "Username: " + responseObject.getUsername(),
                     Toast.LENGTH_LONG).show();

@@ -69,10 +69,10 @@ public class InstagramAPIResponseManager<T> implements Callback<IGAPIResponse> {
                         instagramAPIResponseCallback.onFailure(new InstagramException(meta.getErrorType(), meta.getErrorMessage()));
 
                     } else {
-                        instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does you see this message and try again."));
+                        instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does, try again."));
                     }
                 } else {
-                    instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does you see this message and try again."));
+                    instagramAPIResponseCallback.onFailure(new InstagramException("Usually it does not happen but when it does,try again."));
                 }
             }
 

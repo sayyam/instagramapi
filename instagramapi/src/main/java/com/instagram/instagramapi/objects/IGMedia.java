@@ -59,6 +59,7 @@ public class IGMedia implements Serializable{
     @Expose
     private IGVideos videos;
 
+
     /**
      *
      * @return
@@ -328,5 +329,6 @@ public class IGMedia implements Serializable{
     public void setVideos(IGVideos videos) {
         this.videos = videos;
     }
+
 
 }

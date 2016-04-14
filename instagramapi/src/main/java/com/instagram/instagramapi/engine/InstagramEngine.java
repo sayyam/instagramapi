@@ -1,5 +1,6 @@
 package com.instagram.instagramapi.engine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -60,8 +61,12 @@ public class InstagramEngine {
 
     public static String TYPE = "type";
     public static String SCOPE = "scope";
-    public static String TYPE_LOGOUT = "type_logout";
-    public static String TYPE_LOGIN = "type_in";
+    final public static int TYPE_LOGOUT = 2;
+    final public static int TYPE_LOGIN = 1;
+    public static String IS_LOGIN_BUTTON = "insta_login_button";
+
+    final public static int REQUEST_CODE_LOGIN = 3111;
+    final public static int REQUEST_CODE_LOGOUT = 3112;
 
     private String appClientID;
     private String appRedirectURL;
@@ -120,6 +125,16 @@ public class InstagramEngine {
         return instance;
     }
 
+
+    public static InstagramEngine getInstance(Context context, IGSession session) {
+        if (instance == null) {
+            mContext = context;
+            instance = new InstagramEngine();
+            instance.setSession(session);
+        }
+        return instance;
+    }
+
     public String getAppRedirectURL() {
         return appRedirectURL;
     }
@@ -165,13 +180,15 @@ public class InstagramEngine {
 
     }
 
-    public void logout() {
-        Intent intent = new Intent(mContext, InstagramAuthActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |
+    public void logout(Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, InstagramAuthActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |
+//                Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        intent.putExtra("type", 2);
-        mContext.startActivity(intent);
+        intent.putExtra(TYPE, TYPE_LOGOUT);
+        activity.startActivityForResult(intent, requestCode);
 
         setSession(null);
     }
