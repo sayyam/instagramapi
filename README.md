@@ -10,6 +10,8 @@ Download
 --------
 ####Gradle:
 ```groovy
+maven { url 'https://dl.bintray.com/sayyam/maven' }
+
 compile 'com.github.sayyam:instagramapi:0.0.6'
 ```
 ####Maven:
