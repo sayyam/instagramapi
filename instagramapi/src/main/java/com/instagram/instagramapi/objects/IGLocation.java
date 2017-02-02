@@ -19,7 +19,7 @@ public class IGLocation {
     private Double longitude;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
 
     public IGLocation() {
     }
@@ -74,14 +74,14 @@ public class IGLocation {
     /**
      * @return The id
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id The id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
