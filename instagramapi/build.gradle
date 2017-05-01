@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/sayyam/instagramapi'
     gitUrl = 'https://github.com/sayyam/instagramapi.git'
 
-    libraryVersion = '0.0.7'
+    libraryVersion = '0.1.0'
 
     developerId = 'sayyam'
     developerName = 'Sayyam mehmood'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 5
-        versionName "0.0.7"
+        versionName "0.1.0"
     }
     buildTypes {
         release {
@@ -49,6 +49,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0'
     compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

@@ -92,8 +92,9 @@ public interface InstagramAPIService {
     @GET("media/{media_id}/comments")
     Call<IGAPIResponse> getCommentsOnMedia(@Path("media_id") String mediaId, @Query("access_token") String accessToken);
 
+    @FormUrlEncoded
     @POST("media/{media_id}/comments")
-    Call<IGAPIResponse> postCommentOnMedia(@Query("text") String commentText, @Path("media_id") String mediaId, @Query("access_token") String accessToken);
+    Call<IGAPIResponse> postCommentOnMedia(@Path("media_id") String mediaId, @Field("text") String commentText, @Query("access_token") String accessToken);
 
     @DELETE("media/{media_id}/comments/{comment_id}")
     Call<IGAPIResponse> removeComment(@Path("comment_id") String commentId, @Path("media_id") String mediaId, @Query("access_token") String accessToken);

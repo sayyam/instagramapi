@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -82,10 +84,19 @@ public class InstagramEngine {
 
     private InstagramEngine() {
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        httpClient.addInterceptor(logging);
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(InstagramKitConstants.kInstagramKitBaseURL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
                 .build();
+
 
         instagramAPIService = retrofit.create(InstagramAPIService.class);
 
@@ -733,9 +744,9 @@ public class InstagramEngine {
      * @param mediaId     Id of the Media object.
      * @param callback    Invoked on successfully creating comment.
      */
-    public void postCommentOnMedia(InstagramAPIResponseCallback<IGPostResponse> callback, String commentText, String mediaId) {
+    public void postCommentOnMedia(InstagramAPIResponseCallback<IGPostResponse> callback, String mediaId, String commentText) {
 
-        Call<IGAPIResponse> call = instagramAPIService.postCommentOnMedia(commentText, mediaId, getSession().getAccessToken());
+        Call<IGAPIResponse> call = instagramAPIService.postCommentOnMedia(mediaId, commentText, getSession().getAccessToken());
         call.enqueue(new InstagramAPIResponseManager<>(callback, new TypeToken<IGPostResponse>() {
         }.getType()));
     }

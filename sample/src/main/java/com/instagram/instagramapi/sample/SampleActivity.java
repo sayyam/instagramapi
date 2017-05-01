@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.instagram.instagramapi.activities.InstagramAuthActivity;
 import com.instagram.instagramapi.engine.InstagramEngine;
 import com.instagram.instagramapi.engine.InstagramKitConstants;
+import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.interfaces.InstagramAPIResponseCallback;
 import com.instagram.instagramapi.interfaces.InstagramLoginCallbackListener;
 import com.instagram.instagramapi.objects.IGComment;
@@ -20,9 +21,8 @@ import com.instagram.instagramapi.objects.IGMedia;
 import com.instagram.instagramapi.objects.IGPagInfo;
 import com.instagram.instagramapi.objects.IGPostResponse;
 import com.instagram.instagramapi.objects.IGRelationship;
-import com.instagram.instagramapi.objects.IGTag;
-import com.instagram.instagramapi.exceptions.InstagramException;
 import com.instagram.instagramapi.objects.IGSession;
+import com.instagram.instagramapi.objects.IGTag;
 import com.instagram.instagramapi.objects.IGUser;
 import com.instagram.instagramapi.utils.InstagramKitLoginScope;
 import com.instagram.instagramapi.widgets.InstagramLoginButton;
@@ -233,7 +233,7 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getCommentsOnMedia(mediaCommentsApiResponseCallback, "1208938763290395995_3043977032");
                 break;
             case R.id.postCommentOnMedia:
-                InstagramEngine.getInstance(SampleActivity.this).postCommentOnMedia(postCommentApiResponseCallback, "This is a test comment", "1208938763290395995_3043977032");
+                InstagramEngine.getInstance(SampleActivity.this).postCommentOnMedia(postCommentApiResponseCallback, "1208610448356656732_3043977032", "This is a test comment");
                 break;
             case R.id.removeComment:
                 InstagramEngine.getInstance(SampleActivity.this).removeComment(deleteCommentApiResponseCallback, "commentId", "mediaId");
