@@ -230,10 +230,10 @@ public class SampleActivity extends AppCompatActivity {
                 InstagramEngine.getInstance(SampleActivity.this).getMediaAtLocation(mediaAtLocationApiResponseCallback, 100000f, location);
                 break;
             case R.id.getCommentsOnMedia:
-                InstagramEngine.getInstance(SampleActivity.this).getCommentsOnMedia(mediaCommentsApiResponseCallback, "mediaId");
+                InstagramEngine.getInstance(SampleActivity.this).getCommentsOnMedia(mediaCommentsApiResponseCallback, "1208938763290395995_3043977032");
                 break;
             case R.id.postCommentOnMedia:
-                InstagramEngine.getInstance(SampleActivity.this).postCommentOnMedia(postCommentApiResponseCallback, "This is a test comment", "mediaId");
+                InstagramEngine.getInstance(SampleActivity.this).postCommentOnMedia(postCommentApiResponseCallback, "This is a test comment", "1208938763290395995_3043977032");
                 break;
             case R.id.removeComment:
                 InstagramEngine.getInstance(SampleActivity.this).removeComment(deleteCommentApiResponseCallback, "commentId", "mediaId");
