@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/sayyam/instagramapi'
     gitUrl = 'https://github.com/sayyam/instagramapi.git'
 
-    libraryVersion = '0.1.0'
+    libraryVersion = '0.1.1'
 
     developerId = 'sayyam'
     developerName = 'Sayyam mehmood'

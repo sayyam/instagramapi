@@ -29,7 +29,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation project(':instagramapi')
-//    implementation 'com.github.sayyam:instagramapi:0.1.0'
+//    implementation project(':instagramapi')
+    implementation 'com.github.sayyam:instagramapi:0.1.1'
 
 }
