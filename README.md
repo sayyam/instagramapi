@@ -12,14 +12,14 @@ Download
 ```groovy
 maven { url 'https://dl.bintray.com/sayyam/maven' }
 
-compile 'com.github.sayyam:instagramapi:0.1.0'
+compile 'com.github.sayyam:instagramapi:0.1.1'
 ```
 #### Maven:
 ```xml
 <dependency>
   <groupId>com.github.sayyam</groupId>
   <artifactId>instagramapi</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```
