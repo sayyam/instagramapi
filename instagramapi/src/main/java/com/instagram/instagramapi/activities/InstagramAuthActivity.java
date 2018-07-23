@@ -1,5 +1,6 @@
 package com.instagram.instagramapi.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.instagram.instagramapi.R;
@@ -37,13 +39,16 @@ public class InstagramAuthActivity extends Activity {
     String[] scopes;
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_instagram);
 
-        instagrramAuthWebView = (WebView) findViewById(R.id.instagrramAuthWebView);
+        instagrramAuthWebView =  findViewById(R.id.instagrramAuthWebView);
+
+        instagrramAuthWebView.getSettings().setJavaScriptEnabled(true);
 
         authURL = InstagramEngine.getInstance(getApplicationContext()).authorizationURL();
         redirectURL = InstagramEngine.getInstance(getApplicationContext()).getAppRedirectURL();
@@ -79,6 +84,7 @@ public class InstagramAuthActivity extends Activity {
                     }
 
                     instagrramAuthWebView.setWebViewClient(webViewClient);
+                    instagrramAuthWebView.setWebChromeClient(new WebChromeClient());
                     instagrramAuthWebView.loadUrl(authURL);
 
                     break;
