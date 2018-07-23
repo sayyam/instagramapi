@@ -8,18 +8,18 @@ A wrapper on instagram API for android.
 
 Download
 --------
-####Gradle:
+#### Gradle:
 ```groovy
 maven { url 'https://dl.bintray.com/sayyam/maven' }
 
-compile 'com.github.sayyam:instagramapi:0.0.6'
+compile 'com.github.sayyam:instagramapi:0.1.1'
 ```
-####Maven:
+#### Maven:
 ```xml
 <dependency>
   <groupId>com.github.sayyam</groupId>
   <artifactId>instagramapi</artifactId>
-  <version>0.0.6</version>
+  <version>0.1.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -27,7 +27,7 @@ compile 'com.github.sayyam:instagramapi:0.0.6'
 Usage
 --------
 
-####Include Application's Client Id and Redirect Uri:
+#### Include Application's Client Id and Redirect Uri:
 Add following meta tags in ```<application>``` tag of your ```AndroidManifest```.
 
 ```xml
@@ -41,12 +41,12 @@ Add following meta tags in ```<application>``` tag of your ```AndroidManifest```
 ```
 You can get above credentials from [Instagram Developrs Portal](https://www.instagram.com/developer/ "Instagram Developrs Portal").
 
-####Initiate the authorization process:
+#### Initiate the authorization process:
 You can start the ```InstagramEngine``` in two different ways:
 1. Intent
 2. InstagramLoginButton
 
-####1- Initiate the authorization process via ```Intent```:
+#### 1- Initiate the authorization process via ```Intent```:
 
 ##### Create an intent
 ```java
@@ -91,9 +91,9 @@ You can start the ```InstagramEngine``` in two different ways:
   }
 ```
 
-####2- Initiate the login process via ```InstagramLoginButton```:
+#### 2- Initiate the login process via ```InstagramLoginButton```:
 
-#####Add ```InstagramLoginButton``` in your layout
+##### Add ```InstagramLoginButton``` in your layout
 ```xml
   <com.instagram.instagramapi.widgets.InstagramLoginButton
       android:id="@+id/instagramLoginButton"
@@ -111,7 +111,7 @@ You can start the ```InstagramEngine``` in two different ways:
  instagramLoginButton.setScopes(scopes);
 
 ```
-#####Handle Login callback
+##### Handle Login callback
 ```java
   InstagramLoginCallbackListener instagramLoginCallbackListener = new InstagramLoginCallbackListener() {
       @Override
@@ -140,11 +140,11 @@ You can start the ```InstagramEngine``` in two different ways:
 
 #### Fetch User details:
 
-#####Get user details via ```getUserDetails()```
+##### Get user details via ```getUserDetails()```
 ```java
 InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserResponseCallback);
 ```
-#####Handle Response in callback
+##### Handle Response in callback
 ```java
   InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
       @Override
@@ -161,12 +161,12 @@ InstagramEngine.getInstance(SampleActivity.this).getUserDetails(instagramUserRes
   };
 ```
 
-####Logout user:
+#### Logout user:
 
 ```java
 InstagramEngine.getInstance(SampleActivity.this).logout();
 ```
-####Exception Handling:
+#### Exception Handling:
 In case of exceptions like insufficient scope or invalid parameters you will get InstagramException in onFailure() of your callback.
 ```java
 InstagramAPIResponseCallback<IGUser> instagramUserResponseCallback = new InstagramAPIResponseCallback<IGUser>() {
